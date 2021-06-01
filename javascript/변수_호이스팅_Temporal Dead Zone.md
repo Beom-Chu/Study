@@ -1,13 +1,15 @@
 # 변수, 호이스팅, TDZ(Temporal Dead Zone)
 
-####  var, let, const의 차이
+* var, let, const의 차이
 
-|          |   var    |  let  | const |
-| :------: | :------: | :---: | :---: |
-|  재선언  |    O     |   X   |   X   |
-|  재할당  |    O     |   O   |   X   |
-| 호이스팅 |    O     |   O   |   O   |
-|  스코프  | function | block | block |
+  |          |   var    |  let  | const |
+  | :------: | :------: | :---: | :---: |
+  |  재선언  |    O     |   X   |   X   |
+  |  재할당  |    O     |   O   |   X   |
+  | 호이스팅 |    O     |   O   |   O   |
+  |  스코프  | function | block | block |
+
+<br>
 
 * 호이스팅
 
@@ -23,6 +25,7 @@
   name = 'apple';
   ```
 
+<br>
 
 
 * Temporal Dead Zone
