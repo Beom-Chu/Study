@@ -15,66 +15,66 @@ target : 복사 대상 객체
 ```java
 import org.springframework.beans.BeanUtils;
 
-public class Student {
-  public static void main(String[] args) {
-    StudentInfo st = new StudentInfo();
-    st.setName("홍길동");
-    st.setGrade(1);
-    st.setNumber(2);
-    StudentInfoTarget stTarget = new StudentInfoTarget();
-    BeanUtils.copyProperties(st, stTarget); // StudentInfoTarget(name=홍길동, grade=2, number=15)
+  public class Student {
+    public static void main(String[] args) {
+      StudentInfo st = new StudentInfo();
+      st.setName("홍길동");
+      st.setGrade(1);
+      st.setNumber(2);
+      StudentInfoTarget stTarget = new StudentInfoTarget();
+      BeanUtils.copyProperties(st, stTarget); // StudentInfoTarget(name=홍길동, grade=2, number=15)
+    }
   }
-}
 
-class StudentInfo {
-  private String name;
-  private int grade;
-  private int number;
+  class StudentInfo {
+    private String name;
+    private int grade;
+    private int number;
 
-  public String getName() {
-    return name;
+    public String getName() {
+      return name;
+    }
+    public void setName(String name) {
+      this.name = name;
+    }
+    public int getGrade() {
+      return grade;
+    }
+    public void setGrade(int grade) {
+      this.grade = grade;
+    }
+    public int getNumber() {
+      return number;
+    }
+    public void setNumber(int number) {
+      this.number = number;
+    }
   }
-  public void setName(String name) {
-    this.name = name;
-  }
-  public int getGrade() {
-    return grade;
-  }
-  public void setGrade(int grade) {
-    this.grade = grade;
-  }
-  public int getNumber() {
-    return number;
-  }
-  public void setNumber(int number) {
-    this.number = number;
-  }
-}
 
-class StudentInfoTarget {
-  private String name;
-  private int grade;
-  private int class;
+  class StudentInfoTarget {
+    private String name;
+    private int grade;
+    private int number;
 
-  public String getName() {
-    return name;
+    public String getName() {
+      return name;
+    }
+    public void setName(String name) {
+      this.name = name;
+    }
+    public int getGrade() {
+      return grade;
+    }
+    public void setGrade(int grade) {
+      this.grade = grade;
+    }
+    public int getNumber() {
+      return number;
+    }
+    public void setNumber(int number) {
+      this.number = number;
+    }
   }
-  public void setName(String name) {
-    this.name = name;
-  }
-  public int getGrade() {
-    return grade;
-  }
-  public void setGrade(int grade) {
-    this.grade = grade;
-  }
-  public int getNumber() {
-    return number;
-  }
-  public void setNumber(int number) {
-    this.number = number;
-  }
-}
 ```
 
  <br>
