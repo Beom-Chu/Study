@@ -14,6 +14,7 @@
 | @Cleanup | close() 메소드를 자동으로 호출. |
 | @EqualsAndHashCode | equals, hashCode 메소드 생성.<br>exclude로 제외 처리 가능. |
 | @Builder | 빌더 패턴을 사용할 수 있도록 해줌. |
+| @Builder.Default | 빌더 패턴 사용시 특정 필드의 기본값을 설정해줄 경우 사용. |
 
 <br>
 
