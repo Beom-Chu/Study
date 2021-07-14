@@ -2,6 +2,7 @@
 
 필드 개수가 많은 객체를 setter를 사용하는 대신에 사용.
 
+필드명이 같은데 타입이 다른 경우 복사가 되지 않으므로 타입 변경을 원하면 타입 변경 setter 메서드를 구현.
 
 
 ### BeanUtils.copyProperties(source, target);
@@ -54,7 +55,7 @@ import org.springframework.beans.BeanUtils;
   class StudentInfoTarget {
     private String name;
     private int grade;
-    private int number;
+    private String number;
 
     public String getName() {
       return name;
@@ -68,11 +69,15 @@ import org.springframework.beans.BeanUtils;
     public void setGrade(int grade) {
       this.grade = grade;
     }
-    public int getNumber() {
+    public String getNumber() {
       return number;
     }
-    public void setNumber(int number) {
+    public void setNumber(String number) {
       this.number = number;
+    }
+    //타입 변경 setter
+    public void setNumber(int number) {
+      this.number = String.valueOf(number);
     }
   }
 ```
