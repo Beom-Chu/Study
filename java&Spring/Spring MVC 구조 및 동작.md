@@ -1,6 +1,6 @@
 # Spring MVC 구조 및 동작
 
-![](./spring_기본구조.png)
+![](./images/spring_기본구조.png)
 
 ### Dispatcher-Servlet
 
