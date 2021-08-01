@@ -140,8 +140,30 @@ short, byte, int, long, float, double, char, java.lang.String, java.lang.Class
 	}
 ```
 
+#### @TestMethodOrder
+* `@Order`를 사용해서 실행순서를 설정 후 테스트 
+```java
+@TestMethodOrder(OrderAnnotation.class)
+class OrderedTestsDemo {
+  @Test
+  @Order(2)
+  void secondTest() {
+    System.out.println("2");
+  }
 
+  @Test
+  @Order(1)
+  void firstTest() {
+    System.out.println("1");
+  }
 
+  @Test
+  @Order(3)
+  void thirdTest() {
+    System.out.println("3");
+  }
+}
+```
 
 
 ## JUnit assert Method
