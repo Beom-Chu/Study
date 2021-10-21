@@ -4,6 +4,7 @@
 
   * [BeanUtils.copyProper 활용](./객체복사_BeanUtils.copyProperties.md) 
 * 처음부터 DTO로 DB에서 받기
+  * JPA Data에서 Projection 활용 
 * @JsonIgnoreProperties({"board"})
   * 무시할 속성이나 속성 목록을 표시하는 데 사용
 * @JsonIgnore
