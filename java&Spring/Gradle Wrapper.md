@@ -50,6 +50,16 @@ Gradle Wrapper 설정파일이다.
 
 <br>
 
+### 명령어
+
+1. 해당 프로젝트 폴더로 이동
+
+2. gradlew로 빌드
+
+   **Linux**  `./gradlew clean build`
+
+   **Windows**  `gradlew clean build`
+
 <br>
 
 <br>
