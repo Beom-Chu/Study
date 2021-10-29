@@ -132,7 +132,7 @@ gradle이 제공하는 task들이 있고, `build.gradle`에서 사용자가 직�
 gradle이 제공하는 task의 경우 아래 명령어를 통해 확인 가능하다.
 (프로젝트 타입에 따라 제공되는 task가 다르다.)
 `$ gradle tasks`
-![img](https://media.vlpt.us/images/franc/post/31acc40f-0b76-4fd7-b040-6bdbe38c0010/gradle2.png)
+
 
 
 
@@ -142,7 +142,7 @@ gradle이 제공하는 task의 경우 아래 명령어를 통해 확인 가능�
 - 프로젝트를 컴파일(빌드)한다.
 - build.gradle에 `apply plugin: 'java'`가 추가된 경우 .jar파일로 패키징까지 된다.
 - 컴파일된 파일들은 'app > build' 폴더 안에 생성되며, .jar파일은 'build > libs'에 패키징된다.
-  ![img](https://media.vlpt.us/images/franc/post/acda94f7-b284-4b08-abff-8b6f2125d651/gradle3.png)
+
 
 **프로젝트 실행**
 `$ gradle run`
