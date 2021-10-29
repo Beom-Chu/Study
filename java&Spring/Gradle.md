@@ -24,8 +24,10 @@ $ gradle init [--type 타입명]
 ```
 
 프로젝트에 필요한 초기 환경을 구성한다.
+
 타입을 주지 않는 경우 아래의 절차대로 진행하며, 타입을 줄 경우 'build script DSL' 절차부터 진행된다.
- `예: 'gradle init --type java-application'`
+
+`예: 'gradle init --type java-application'`
 
 ***반드시 프로젝트 디렉토리를 만들어, 그 안에서 작업할 것!\***
 
@@ -67,6 +69,7 @@ Enter selection (default: JUnit 4) [1..4]
 
 
 **basic 타입으로 생성 시 프로젝트 구조**
+
 Gradle 프로젝트의 필수환경만 제공하며, 로우레벨에서 프로젝트를 구성해야 한다.
 
 ```null
@@ -98,7 +101,10 @@ Gradle 프로젝트의 필수환경만 제공하며, 로우레벨에서 프로�
 
 
 **java-application 타입으로 생성 시 프로젝트 구조**
-Gradle 프로젝트 환경 + 자바 어플리케이션 환경이 구성되며, mainClass는 'App.java'로 설정된다. ("hello world!" 출력)
+
+Gradle 프로젝트 환경 + 자바 어플리케이션 환경이 구성되며, mainClass는 'App.java'로 설정된다.
+
+ ("hello world!" 출력)
 
 ```null
 . 
@@ -128,29 +134,34 @@ Gradle 프로젝트 환경 + 자바 어플리케이션 환경이 구성되며, m
 ### 2. 컴파일 및 실행 (java-application)
 
 gradle에서 task는 프로젝트의 작업단위다.
+
 gradle이 제공하는 task들이 있고, `build.gradle`에서 사용자가 직접 만들 수도 있다.
+
 gradle이 제공하는 task의 경우 아래 명령어를 통해 확인 가능하다.
+
 (프로젝트 타입에 따라 제공되는 task가 다르다.)
+
 `$ gradle tasks`
 
 
 
-
 **프로젝트 빌드**
+
 `$ gradle build`
 
 - 프로젝트를 컴파일(빌드)한다.
 - build.gradle에 `apply plugin: 'java'`가 추가된 경우 .jar파일로 패키징까지 된다.
 - 컴파일된 파일들은 'app > build' 폴더 안에 생성되며, .jar파일은 'build > libs'에 패키징된다.
 
-
 **프로젝트 실행**
+
 `$ gradle run`
 
 - 컴파일 후 메인클래스를 실행한다.
 - 스프링부트의 경우 `$ gradle bootRun`을 통해 앱을 구동할 수 있다.
 
-**프로젝트 패키징**
+**프로젝트 패키징
+
 `$ gradle jar`
 
 - 프로그램을 .jar로 패키징
@@ -158,6 +169,7 @@ gradle이 제공하는 task의 경우 아래 명령어를 통해 확인 가능�
 - `apply plugin: 'java'`가 추가된 경우 build명령으로 해결가능
 
 **프로젝트 클린**
+
 `$ gradle clean`
 
 - build 폴더를 제거하여, 빌드 이전 상태로 되돌린다.
@@ -166,19 +178,30 @@ gradle이 제공하는 task의 경우 아래 명령어를 통해 확인 가능�
 
 ### gradle-wrapper
 
-위와 같이 'gradle' 명령어로 프로젝트를 빌드할 수 있지만, gradle-wrapper의 실행명령으로도 task를 실행할 수 있다.
+위와 같이 'gradle' 명령어로 프로젝트를 빌드할 수 있지만, 
+
+gradle-wrapper의 실행명령으로도 task를 실행할 수 있다.
+
 굳이 gradle 대신 wrapper를 사용하는 이유는 뭘까?
 
-**새로운 환경에서 gradle을 설치하지 않고도 빌드가 가능하다.**
-gradle 명령어의 경우 기본적으로 gradle이 로컬에 설치가 되어있어야 한다.
-또한 gradle 명령어로 빌드를 할 경우 로컬에 설치된 gradle 버젼으로 빌드되기 때문에, 개발 당시 버젼과 다를경우 문제를 일으킬 수도 있다.
+**새로운 환경에서 gradle을 설치하지 않고도 빌드가 가능하다.
 
-`./gradlew build`를 사용하면 사용자가 프로젝트를 만든 사람과 동일한 버전으로 빌드를 할 수 있으며, 심지어 gradle이 설치되지 않아도 빌드가 가능하다.
+gradle 명령어의 경우 기본적으로 gradle이 로컬에 설치가 되어있어야 한다.
+
+또한 gradle 명령어로 빌드를 할 경우 로컬에 설치된 gradle 버젼으로 빌드되기 때문에, 
+
+개발 당시 버젼과 다를경우 문제를 일으킬 수도 있다.
+
+`./gradlew build`를 사용하면 사용자가 프로젝트를 만든 사람과 동일한 버전으로 빌드를 할 수 있으며,
+
+ 심지어 gradle이 설치되지 않아도 빌드가 가능하다.
 
 **리눅스**
+
 `$ ./gradlew [Task명]`
 
-**윈도우**
+**윈도우
+
 `> gradlew [task명]`
 
 
@@ -247,7 +270,9 @@ dependencies {
   - 빌드에서 실행까지 의존하는 라이브러리를 지정한다.
 - plugin
   - 프로젝트에서 사용하는 Gradle 플러그인을 추가한다.
+  
     (위에 설정된 플러그인들은 부트 환경구성에 필요한 플러그인)
+  
   - eclipse : eclipse IDE 에서도 해당 Gradle project를 개발할 수 있도록 플러그인이 설치됨.
 - group / version / sourceCompatibility
   - 프로젝트 생성 시 groupId, 어플리케이션 버젼, 자바버젼
@@ -259,15 +284,19 @@ dependencies {
   - 라이브러리 추가
   - compile, api
     - 모듈 수정 시, 해당 모듈을 의존하고있는 모듈을 모두 빌드 -> 느리다.
+    
     - `compile`의 경우 Gradle 3.0부터는 사용안하는 것을 권장(`api`로 대체)
+    
       `A(api) <- B <- C 로 의존하는 구조라면, A 수정 시 B,C 모두 빌드`
   - implementation
     - 모듈 수정 시, 해당 모듈을 직접 의존하는 모듈만 빌드 -> 비교적 빠르다.
+    
       `A(implementation) <- B <- C 로 의존하는 구조라면, A 수정 시 B 만 빌드`
   - testImplementation
     - 테스트에 사용하는 라이브러리 추가
   - annotationProcessor
     - 어노테이션 기반 라이브러리를 컴파일러가 인식하도록 함
+    
       `ex.) lombok, queryDSL 등`
   - compileOnly
     - compile에만 필요하고, runtime에는 필요없는 라이브러리를 추가
