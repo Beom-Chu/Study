@@ -15,6 +15,7 @@
 | @EqualsAndHashCode | equals, hashCode 메소드 생성.<br>exclude로 제외 처리 가능. |
 | @Builder | 빌더 패턴을 사용할 수 있도록 해줌. |
 | @Builder.Default | 빌더 패턴 사용시 특정 필드의 기본값을 설정해줄 경우 사용. |
+| @Accessors(chain=true) | 객체 생성 후 체인 형태로 set 메소드 사용 가능. |
 
 <br>
 
@@ -44,3 +45,25 @@
 
 - Builder를 사용하면 객체 생성이 명확해진다. 가급적 클래스 보다는 직접 만든 생성자 혹은 static 객체 생성 메소드에 붙이는 것을 권장한다.
 - @Builder를 붙이면 파라미터 순서가 아닌 이름으로 값을 설정하기 때문에 리팩토링에 유연하게 대응할 수 있고, 필드 순서를 변경해도 문제가 없다.
+
+#### @Accessors(chain=true)
+
+```java
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Accessors(chain = true)
+public class AccessorsChain {
+    private int id;
+    private String name;
+}
+```
+
+```java
+@Test
+public void test (){
+    AccessorsChain accessorsChain = new AccessorsChain();
+    accessorsChain.setId(10).setName("testName");
+}
+```
+
