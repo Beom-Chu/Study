@@ -125,6 +125,8 @@ public interface GenericMapper<D, E> {
 
 상속만으로 코딩이 끝나며, 필드명이 다르면 하나 하나 수동으로 매핑 필요.
 
+스프링과 MapStruct를 사용할 경우 `@Mapper(componentModel = "spring")`  필수
+
 ```java
 @Mapper(componentModel = "spring")
 public interface BrandsMapper extends GenericMapper<BrandsDto, Brands> {
@@ -173,11 +175,47 @@ public class BrandsService {
 }
 ```
 
+<br>
+
+#### 무시할 필드 명시
+
+mapping에 ignore 사용
+
+```java
+@Mapper(componentModel = "spring")
+public interface TestBrandsMapper {
+
+    @Mapping(target = "partnerId2", ignore = true)
+    @Mapping(target = "useyn", ignore = true)
+    TestBrands toEntity(TestBrandsDto dto);
+
+    @Mapping(target = "brandName2", ignore = true)
+    @Mapping(target = "useyn", ignore = true)
+    TestBrandsDto toDto(TestBrands entity);
+}
+```
+
+#### 불일치 필드 수동 매핑
+
+```java
+@Mapper(componentModel = "spring")
+public interface TestBrandsMapper {
+
+    @Mapping(source = "partnerId", target = "partnerId2")
+    @Mapping(target = "useyn", ignore = true)
+    TestBrands toEntity(TestBrandsDto dto);
+
+    @Mapping(source = "brandName", target = "brandName2")
+    @Mapping(target = "useyn", ignore = true)
+    TestBrandsDto toDto(TestBrands entity);
+}
+```
+
 <br><br><br><br>
 
 출처 : https://www.skyer9.pe.kr/wordpress/?p=1596
 
-
+​	https://www.skyer9.pe.kr/wordpress/?p=1603
 
 
 
