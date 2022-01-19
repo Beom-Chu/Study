@@ -1,14 +1,14 @@
-# 낙관적 잠금(Optimistic Lock), 비관적 잠금(Pessimistic Lock)
+# 낙관적 잠금(Optimistic Lock)
 
 ### 낙관적 잠금
 
 * 데이터 갱신시 충돌이 발생하지 않을 것이라고 낙관적으로 보고 잠금을 거는 기법.
-
 * 디비에 락을 걸기보단 충돌 방지(Conflict detection)에 가까움
-
 * JPA 에서는 낙관적 잠금을 쉽게 사용 가능
   * 동시에 동일한 데이터에 대한 업데이트가 서로 간섭하지 않도록 version이라는 속성을 확인하여 Entity의 변화를 감지하는 메커니즘
   * `@version` Annotation을 사용
+
+![](./images/낙관적잠금.png)
 
 ##### @version 사용시 주의사항
 
@@ -54,15 +54,49 @@ public class Student {
     private Integer version;
 }
 ```
+##### Find
 
+```java
+	entityManager.find(Student.class, studentId, LockModeType.OPTIMISTIC);
+```
 
+##### Query
 
+```java
+    Query query = entityManager.createQuery("select s from Student s where s.id = :id");
+    query.setParameter("id", studentId);
+    query.setLockMode(LockModeType.OPTIMISTIC_FORCE_INCREMENT);
+    query.getResultList();
+```
 
+##### Explicit Locking(명시적 잠금)
 
+```java
+    Student student = entityManager.find(Student.class, studentId);
+    entityManager.lock(student, LockModeType.OPTIMISTIC);
+```
 
+##### Refresh
+
+```java
+    Student student = entityManager.find(Student.class, studentId);
+    entityManager.refresh(student, LockModeType.READ);
+```
+
+##### NamedQuery
+
+```java
+    @NamedQuery(name="optimisticLock",
+      query="SELECT s FROM Student s WHERE s.id LIKE :id",
+      lockMode = WRITE)
+```
 
 
 
 <br><br><br><br><br>
 
- refferenct :  https://velog.io/@lsb156/JPA-Optimistic-Lock-Pessimistic-Lock
+ refferenct : https://hwannny.tistory.com/81
+
+https://velog.io/@lsb156/JPA-Optimistic-Lock-Pessimistic-Lock
+
+https://www.baeldung.com/jpa-optimistic-locking?__cf_chl_f_tk=.76LEsMynHrH6G4LFWrC0WI3W5LkPoqFp3Vcc9saibE-1642581648-0-gaNycGzNC9E#3-explicit-locking
