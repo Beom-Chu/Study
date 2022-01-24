@@ -16,6 +16,8 @@
 | @Builder | 빌더 패턴을 사용할 수 있도록 해줌. |
 | @Builder.Default | 빌더 패턴 사용시 특정 필드의 기본값을 설정해줄 경우 사용. |
 | @Accessors(chain=true) | 객체 생성 후 체인 형태로 set 메소드 사용 가능. |
+| @Slf4j | 자동으로 log 필드를 만들고, 해당 클래스의 이름으로 로거 객체를 생성하여 할당. |
+| @SneakyThrows | 명시적인 예외 처리를 생략 가능. |
 
 <br>
 
@@ -65,5 +67,75 @@ public void test (){
     AccessorsChain accessorsChain = new AccessorsChain();
     accessorsChain.setId(10).setName("testName");
 }
+```
+
+#### @Cleanup
+
+```java
+   public void copyFile(String in, String out) throws IOException {
+       @Cleanup FileInputStream inStream = new FileInputStream(in);
+       @Cleanup FileOutputStream outStream = new FileOutputStream(out);
+       byte[] b = new byte[65536];
+       while (true) {
+           int r = inStream.read(b);
+           if (r == -1) break;
+           outStream.write(b, 0, r);
+       }
+   }
+```
+위와 같이 사용시 아래처럼 컴파일.
+```java
+	public void copyFile(String in, String out) throws IOException {
+       @Cleanup FileInputStream inStream = new FileInputStream(in);
+       try {
+           @Cleanup FileOutputStream outStream = new FileOutputStream(out);
+           try {
+               byte[] b = new byte[65536];
+               while (true) {
+                   int r = inStream.read(b);
+                   if (r == -1) break;
+                   outStream.write(b, 0, r);
+               }
+           } finally {
+               if (outStream != null) outStream.close();
+           }
+       } finally {
+           if (inStream != null) inStream.close();
+       }
+   }
+```
+
+#### @Slf4j
+
+```java
+   @Slf4j
+   public class LogExample {
+   }
+```
+```java
+   public class LogExample {
+       private static final org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(LogExample.class);
+   }
+```
+
+#### @SneakyThrows
+
+```java
+   @SneakyThrows(UnsupportedEncodingException.class)
+   public void utf8ToString(byte[] bytes) {
+       return new String(bytes, "UTF-8");
+   }
+```
+
+```java
+   public void utf8ToString(byte[] bytes) {
+       try {
+           return new String(bytes, "UTF-8");
+       } catch (UnsupportedEncodingException $uniqueName) {
+           throw useMagicTrickeryToHideThisFromTheCompiler($uniqueName);
+           // This trickery involves a bytecode transformer run automatically during the final stages of compilation;
+           // there is no runtime dependency on lombok.
+       }
+   }
 ```
 
