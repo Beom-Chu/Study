@@ -1,6 +1,6 @@
 # BeanFactory와 ApplicationContext
 
-![](./images/BeanFactory와 ApplicationContext_1.png)
+![](./images/BeanFactory와ApplicationContext_1.png)
 
 #### BeanFactory
 
@@ -22,7 +22,7 @@
 
 #### ApplicatonContext가 제공하는 부가기능
 
-![](./images/BeanFactory와 ApplicationContext_2.png)
+![](./images/BeanFactory와ApplicationContext_2.png)
 
 * 메시지소스를 활용한 국제화 기능 
   * 예를 들어서 한국에서 들어오면 한국어로, 영어권에서 들어오면 영어로 출력 
