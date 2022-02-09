@@ -60,3 +60,42 @@ Events:
 kubectl delete pod/echo
 ```
 
+
+
+#### Pod 생성 분석![](./images/pod생성과정.png)
+
+#### YAML로 설정파일 작성
+
+`kubectl run` 명령어는 실전에서 거의 사용하지 않고 YAML 설정 파일 활용.
+
+``` yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: echo
+  labels:
+    app: echo
+spec:
+  containers:
+    - name: app
+      image: ghcr.io/subicura/echo:v1
+```
+
+* **필수요소**
+
+| 정의     | 설명          | 예                                            |
+| -------- | ------------- | :-------------------------------------------- |
+| version  | 오브젝트 버전 | v1, app/v1, networking.k8s.io/v1, ...         |
+| kind     | 종류          | Pod, Replicaset, Deployment, Service, Ingress |
+| metadata | 메타데이터    | name, label, annotation(주석) 으로 구성       |
+| spec     | 상세명세      | 리소스 종류마다 다름                          |
+
+```shell
+# Pod 생성 (yaml 파일이 존재하는 경로에서)
+kubectl apply -f echo-pod.yml
+```
+
+
+
+
+
