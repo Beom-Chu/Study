@@ -97,5 +97,73 @@ kubectl apply -f echo-pod.yml
 
 
 
+#### 컨테이너 상태 모니터링
 
+컨테이너 생성과 실제 서비스 준비는 약간의 차이가 존재.
+
+![](./images/컨테이너생성과정.png)
+
+
+
+### livenessProbe
+
+컨테이너가 정상 동작하는지 체크하고 정상 동작하지 않으면 컨테이너를 재시작하여 문제 해결.
+
+이때 정상 동작을 체크하는 방법. 
+
+> `httpGet`,  `tcpSocket`, `exec` 방법으로 체크
+
+```yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: echo-lp
+  labels:
+    app: echo
+spec:
+  containers:
+    - name: app
+      image: ghcr.io/subicura/echo:v1
+      livenessProbe:
+        httpGet:
+          path: /not/exist
+          port: 8080
+        initialDelaySeconds: 5
+        timeoutSeconds: 2 # Default 1
+        periodSeconds: 5 # Defaults 10
+        failureThreshold: 1 # Defaults 3
+```
+
+존재하지 않는 path를 입력하면 Pod가 여러 번 재시작 되고 `CrashLoopBackOff` 상태로 변경 됨.
+
+
+
+### readinessProbe
+
+컨테이너가 준비되어있는지 체크하고 정상 준비 상태가 아니면 Pod로 들어오는 요청을 제외.
+
+livenessProve와 차이점 : 문제가 있어도 Pod를 재시작하지 않고 요청만 제외.
+
+```yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: echo-rp
+  labels:
+    app: echo
+spec:
+  containers:
+    - name: app
+      image: ghcr.io/subicura/echo:v1
+      readinessProbe:
+        httpGet:
+          path: /not/exist
+          port: 8080
+        initialDelaySeconds: 5
+        timeoutSeconds: 2 # Default 1
+        periodSeconds: 5 # Defaults 10
+        failureThreshold: 1 # Defaults 3
+```
+
+보통 `livenessProbe`와 `readinessProbe`를 같이 적용
 
