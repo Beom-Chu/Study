@@ -167,3 +167,31 @@ spec:
 
 보통 `livenessProbe`와 `readinessProbe`를 같이 적용
 
+
+
+### 다중 컨테이너
+
+`1 Pod = 1컨테이너` 가 대부분 이지만 여러개의 컨테이너를 가진 경우도 존재.
+
+하나의 Pod에 속한 컨테이너는 서로 네트워크를 localhost로 공유하고 동일한 디렉토리 공유.
+
+```yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: counter
+  labels:
+    app: counter
+spec:
+  containers:
+    - name: app
+      image: ghcr.io/subicura/counter:latest
+      env:
+        - name: REDIS_HOST
+          value: "localhost"
+    - name: db
+      image: redis
+```
+
+*env = 환경변수*
+
