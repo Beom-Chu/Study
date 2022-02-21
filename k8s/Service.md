@@ -6,7 +6,7 @@ Pod는 자체 IP를 가지고 다른 Pod와 통신 할 수 있지만 쉽게 사�
 
 ![](./images/Service구조.png)
 
-
+<br>
 
 ## Service(ClusterIP) 생성
 
@@ -86,7 +86,7 @@ NAME                               DESIRED   CURRENT   READY   AGE
 replicaset.apps/redis-57d787df44   1         1         1       10s
 ```
 
-
+<br>
 
 ### Service 생성 흐름
 
@@ -120,9 +120,9 @@ Subsets:
 Events:  <none>
 ```
 
+<br>
 
-
-
+<br>
 
 ## Service(NodePort) 생성
 
@@ -162,15 +162,13 @@ kubernetes   ClusterIP   10.96.0.1        <none>        443/TCP          3d19h
 redis        ClusterIP   10.103.50.102    <none>        6379/TCP         30m
 ```
 
-
-
 > NodePort와 ClusterIP
 >
 > NodePort는 CluterIP의 기능을 기본으로 포함
 
+<br>
 
-
-
+<br>
 
 ## Service(LoadBalancer) 생성
 
