@@ -4,6 +4,12 @@
 
 
 
+* 한글 설정 가능
+
+`Options` -> `Choose Language` -> `Korean`  
+
+
+
 ### 사용법 reference
 
 https://medium.com/@bluewings/%EB%B6%80%ED%95%98%ED%85%8C%EC%8A%A4%ED%8A%B8-jmeter-%EB%9E%80-6299ecc2f7b1
