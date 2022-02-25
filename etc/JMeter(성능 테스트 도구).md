@@ -2,13 +2,37 @@
 
 기능의 부하테스트 및 측정을 지원하는 Java Application 도구
 
+<br>
 
-
-* 한글 설정 가능
+### 메뉴 한글 설정 가능
 
 `Options` -> `Choose Language` -> `Korean`  
 
+<br>
 
+**툴을 다시 실행시키면 다시 영문 메뉴로 변경 되므로 설정파일 수정**!
+
+`jmeter폴더/bin/jmeter.properties`  파일 텍스트 편집
+
+```properties
+#Preferred GUI language. Comment out to use the JVM default locale's language.
+#language=en  <- 이부분 아래 처럼 변경
+language=ko
+```
+
+<br>
+
+### View Results Tree 의 응답값 한글 깨짐 현상 해결
+
+`jmeter폴더/bin/jmeter.properties`  파일 텍스트 편집
+
+```properties
+# The encoding to be used if none is provided (default ISO-8859-1)
+# sampleresult.default.encoding=ISO-8859-1 <- 이부분 아래처럼 변경
+sampleresult.default.encoding=UTF-8
+```
+
+<br><br>
 
 ### 사용법 reference
 
