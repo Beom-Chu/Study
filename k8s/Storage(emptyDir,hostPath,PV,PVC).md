@@ -125,7 +125,79 @@ spec:
 | PersistentVolumeReclaimPolicy | PV는 연결된 PVC가 삭제 된 후 다른 PVC에 의해 재사용이 가능한데 재사용시 디스크 내용을 삭제 또는 유지 할지에 대한 정책을 설정 가능<br>* Retain : 삭제하지 않고 PV의 내용 유지<br />* Recycle : 재사용 가능하며, 재사용시 데이터의 내용을 자동으로 삭제<br />* Delete : 볼륨의 사용이 끝나면 해당 볼륨 삭제.<br />*ReclaimPolicy 는 디스크의 특성에 따라 적용이 불가능 할 수 있음* |
 | accessModes                   | PV에 대해 동시에 Pod에서 접근할 수 있는 정책 정의<br />* ReadWriteOnce : 해당 PV에 하나의 Pod만 마운트되고 하나의 Pod에서만 읽고 쓰기 가능.<br />* ReadOnlyMany : 여러개의 Pod에 마운트 가능하며 동시에 읽기 가능하나 쓰기는 불가.<br />* ReadWriteMany : 여러개의 Pod에 마운트 가능하며 동시에 읽기/쓰기 가능 |
 
+### PersistentVolumeClaim
 
+```yaml
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: myclaim
+spec:
+  accessModes:
+    - ReadWriteOnce
+  volumeMode: Filesystem
+  resources:
+    requests:
+      storage: 8Gi
+  storageClassName: slow
+  selector:
+    matchLabels:
+      release: "stable"
+    matchExpressions:
+      - {key: environment, operator: In, values: [dev]}
+```
+
+| 옵션                   | 설명                                                         |
+| ---------------------- | ------------------------------------------------------------ |
+| accessMode, VolumeMode | PV 와 동일                                                   |
+| resources              | 필요한 볼륨의 사이즈 정의                                    |
+| selector               | label selector 방식으로 이미 생성되어 있는 PV 중에 label에 매칭되는 볼륨을 찾아 연결 |
+
+<br>
+
+### Dynamic Provisioning
+
+PVC만 정의하면 이에 맞는 물리디스크 생성 및 PV 생성을 자동화해주는 기능
+
+쿠버네티스 1.6 부터 지원
+
+![](D:\workspace\Study\k8s\images\DynamicProvisioning.png)
+
+* PVC를 정의하면 이 내용에 따라 쿠버네티스 클러스터가 물리 Disk를 생성하고 이에 연결된 PV를 생성
+* 디스크를 생성 할 때 필요한 디스크 타입을 정의 : StorageClass
+* PVC에 storage class를 지정하면 이에 맞는 디스크를 생성
+
+```yaml
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: mydisk
+  namespace: dex-prod
+  labels:
+    app: mydisk
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Gi
+  storageClassName: slow
+  volumeMode: Filesystem
+```
+
+```yaml
+apiVersion: storage.k8s.id/v1
+kind: StorageClass
+metadata:
+  name: slow
+provisioner: kubernates.io/aws-ebs
+parameters:
+  type: io1
+  zones: us-east-1d, us-east-1c
+  iopsPerGB: "10"
+```
+
+<br>
 
 <br>
 
