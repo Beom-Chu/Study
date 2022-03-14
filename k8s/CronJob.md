@@ -17,7 +17,8 @@ kind: CronJob
 metadata:
   name: hello
 spec:
-  schedule: "*/1 * * * *"
+  schedule: "*/5 * * * *"
+  concurrencyPolicy: Forbid	# Allow/Forbid : 중복실행 가능여부
   jobTemplate:
     spec:
       template:
@@ -43,7 +44,7 @@ spec:
 # │ │ ┌───────────── 일 (1 - 31)
 # │ │ │ ┌───────────── 월 (1 - 12)
 # │ │ │ │ ┌───────────── 요일 (0 - 6) (일요일부터 토요일까지;
-# │ │ │ │ │                                   특정 시스템에서는 7도 일요일)
+# │ │ │ │ │                           특정 시스템에서는 7도 일요일)
 # │ │ │ │ │
 # │ │ │ │ │
 # * * * * *
@@ -59,3 +60,10 @@ spec:
 | 매시 5분 단위로 실행     | */5 * * * * |
 
 **CronJob을 적용하면 Scheduling 된 주기마다 한번씩 Pod를 생성하고 Job을 실행하고 Complete하는 과정을 반복**
+
+
+
+#### concurrencyPolicy 옵션
+
+* Allow : 중복실행 가능
+* Forbid : 중복실행 불가 (실행 상태인 잡이 있을 경우 다음 잡 실행 시간이 되도 잡을 실행하지 않음)
