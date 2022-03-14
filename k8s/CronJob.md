@@ -18,7 +18,8 @@ metadata:
   name: hello
 spec:
   schedule: "*/5 * * * *"
-  concurrencyPolicy: Forbid	# Allow/Forbid : 중복실행 가능여부
+  concurrencyPolicy: Forbid	# 동시성 정책
+  startingDeadlineSeconds : 200 # 시작 기한
   jobTemplate:
     spec:
       template:
@@ -67,3 +68,17 @@ spec:
 
 * Allow : 중복실행 가능
 * Forbid : 중복실행 불가 (실행 상태인 잡이 있을 경우 다음 잡 실행 시간이 되도 잡을 실행하지 않음)
+* Replace : 새로운 잡을 실행할 시간이고 이전 잡 실행이 아직 완료되지 않은 경우, 크론 잡은 현재 실행 중인 잡 실행을 새로운 잡 실행으로 대체
+
+
+
+#### startingDeadlineSeconds 옵션
+
+어떤 이유로 스케줄된 시간을 놓친 경우 잡의 시작 기한을 초 단위로 설정.
+
+기한이 지나면 크론 잡이 잡을 실행하지 않음.
+
+이러한 방식으로 기한을 맞추지 못한 잡은 실패한 잡으로 간주.
+
+이 필드를 지정하지 않으면 잡에 기한 없음.
+
