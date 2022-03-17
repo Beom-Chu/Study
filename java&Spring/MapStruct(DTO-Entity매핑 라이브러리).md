@@ -183,15 +183,15 @@ mapping에 ignore 사용
 
 ```java
 @Mapper(componentModel = "spring")
-public interface TestBrandsMapper {
+public interface TestBrandsMapper extends GenericMapper<BrandsDto, Brands> {
 
     @Mapping(target = "partnerId2", ignore = true)
     @Mapping(target = "useyn", ignore = true)
-    TestBrands toEntity(TestBrandsDto dto);
+    Brands toEntity(BrandsDto dto);
 
     @Mapping(target = "brandName2", ignore = true)
     @Mapping(target = "useyn", ignore = true)
-    TestBrandsDto toDto(TestBrands entity);
+    BrandsDto toDto(Brands entity);
 }
 ```
 
@@ -199,17 +199,30 @@ public interface TestBrandsMapper {
 
 ```java
 @Mapper(componentModel = "spring")
-public interface TestBrandsMapper {
+public interface TestBrandsMapper extends GenericMapper<BrandsDto, Brands> {
 
     @Mapping(source = "partnerId", target = "partnerId2")
-    @Mapping(target = "useyn", ignore = true)
-    TestBrands toEntity(TestBrandsDto dto);
+    Brands toEntity(BrandsDto dto);
 
     @Mapping(source = "brandName", target = "brandName2")
-    @Mapping(target = "useyn", ignore = true)
-    TestBrandsDto toDto(TestBrands entity);
+    BrandsDto toDto(Brands entity);
 }
 ```
+
+#### 불일치 필드 - 자식 엔티티 수동 매핑
+
+```java
+@Mapper(componentModel = "spring")
+public interface TestBrandsMapper extends GenericMapper<BrandsDto, Brands> {
+
+    @Override
+    @Mapping(source = "partner.nickName", target = "partnerNickName")
+    @Mapping(source = "partner.partnerType.typeName", target = "partnerTypeName")
+    BrandsDto toDto(Brands entity);
+}
+```
+
+
 
 <br><br><br><br>
 
