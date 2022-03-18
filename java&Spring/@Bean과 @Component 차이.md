@@ -1,4 +1,4 @@
-# Bean과 Component 차이
+# @Bean과 @Component 차이
 
 스프링 MVC에서는 `@Controller`, `@Service`, `@Repository` 등으로 빈으로 등록할 수 있으며, 
 
