@@ -22,23 +22,25 @@
 
 ## 2. Boolean 검색
 
-`or`, `and`, `not` 연산자를 기본으로 지원하며, `and` 가 `or` 보다 높은 우선순위를 갖는다.
+`OR`, `AND`, `NOT` 연산자를 기본으로 지원하며, `AND` 가 `OR` 보다 높은 우선순위를 갖는다.
 이를 변경하고 싶으면 소괄호로 묶어 그룹핑을 하면 된다.
 
+**사용시 대문자로!!**
+
 - 직업이 개발자거나 회사가 naver 인 문서 검색
-  - `job:developer or company:naver`
+  - `job:developer OR company:naver`
 - 직업이 개발자이면서 회사가 naver 인 문서 검색
-  - `job:developer and company:naver`
+  - `job:developer AND company:naver`
 - 회사가 naver 또는 kakao 인 문서 검색
-  - `company:(naver or kakao)`
+  - `company:(naver OR kakao)`
 - 직업이 개발자이면서 회사가 네이버 또는 카카오인 문서 검색
-  - `job:developer and company:naver or company:kakao`
+  - `job:developer AND company:naver OR company:kakao`
 - 직업이 개발자가 아닌 문서 검색
-  - `not job:developer`
+  - `NOT job:developer`
 - 직업이 개발자인데 회사가 네이버 또는 카카오가 아닌 문서 검색
-  - `job:developer and not (company:naver or company:kakao)`
+  - `job:developer AND NOT (company:naver OR company:kakao)`
 - 여러 단어들을 담고 있는 multi-value 필드 검색
-  - `area:(frontend and backend and infra)`
+  - `area:(frontend AND backend AND infra)`
 
 
 
@@ -47,7 +49,7 @@
 `>`, `>=`, `<`, `<=` 를 사용할 수 있다
 
 - 연봉 4000 이상 8000 미만 검색
-  - `salary >= 4000 and salary < 8000`
+  - `salary >= 4000 AND salary < 8000`
 
 
 
@@ -131,23 +133,23 @@ Nested 필드 검색은 nested query를 어떻게 각각의 nested documents 에
 #### 단일 문서에 대해 검색
 
 - `분야가 internet 이면서 직원수가 5000명 이상인 회사` 검색
-  - `companies:{ industry:internet and emp_num >= 5000 }`
+  - `companies:{ industry:internet AND emp_num >= 5000 }`
 
 #### 서로 다른 문서들에 대해 검색
 
 - `분야가 e-commerce 인 회사` 와 `직원수가 2500명 미만인 회사` 검색
-  - `companies:{ industry:e_commerce } and companies:{ emp_num < 2500 }`
+  - `companies:{ industry:e_commerce } AND companies:{ emp_num < 2500 }`
 
 > 이렇게 하면 coupang 과 line 이 검색된다
 
 #### 단일 문서와 서로 다른 문서들을 같이 검색
 
 - `분야가 engineering 이면서 직원수가 5000 명인 회사` 와 `직원수가 10000명 미만인 회사` 검색
-  - `companies:{ industry:engineering and emp_num:5000 } and companies:{ emp_num < 10000 }`
+  - `companies:{ industry:engineering AND emp_num:5000 } AND companies:{ emp_num < 10000 }`
 
 > 이렇게 하면 첫번째 쿼리의 결과는 없고, 두번째 결과로는 kakao와 line이 검색된다
 
 #### 여러 depth 의 nested 필드 검색
 
 - `본사가 대한민국 성남에 위치한 회사` 검색
-  - `companies.location:{ country:Korea and city:Seongnam }`
+  - `companies.location:{ country:Korea AND city:Seongnam }`
