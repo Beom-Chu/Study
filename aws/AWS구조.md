@@ -1,6 +1,4 @@
-# AWS 기초
-
-### AWS의 구조
+# AWS 구조
 
 ![](./images/AWS의구조.png)
 
