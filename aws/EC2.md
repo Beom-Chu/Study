@@ -231,3 +231,48 @@ EC2의 스케일링은 Scale Out 방식.
 | ------------------------------------------------------------ | -------- | ------------------------------ |
 | 시작 구성 (launch configurations) <br>시작 템플릿 (launch template) | 모니터링 | 설정                           |
 
+<br>
+
+### ELB (Elastic Load Balancing)
+
+* 다수의 서비스에 트래픽을 분산 시켜주는 서비스
+* Health Check : 직접 트래픽을 발생시켜 Instance가 살아 있는지 체크
+* Autoscling과 연동 가능
+* 여러 가용영역에 분산 가능
+* 지속적으로 IP주소가 바뀌며 IP 고정 불가능 : 항상 도메인 기반으로 사용
+* 종류
+  * Application Load Balancer
+    * 똑똑한 녀석
+    * 트래픽을 모니터링하여 라우팅 가능
+      * 예 : image.sample.com -> 이미지 서버로, web.sample.com -> 웹 서버로 트래픽 분산
+  * Network Load Balancer 
+    * 빠른 녀석
+    * TCP 기반 빠른 트래픽 분산
+    * Elastic IP 할당 가능
+  * Gateway Load Balancer
+    * 먼저 트래픽 체크하는 녀석
+    * 가상 어플라이언스 배포/확장 관리를 위한 서비스
+
+![](./images/ELB_GatewayLoadBalancer.png)
+
+#### 대상 그룹(Target Group)
+
+* ALB(Application Load Balancer)가 라우팅 할 대상의 집합
+* 구성
+  * 3+1가지 종류
+    * Instance
+    * IP
+    * Lambda
+    * ALB
+  * 프로토콜(HTTP, HTTPS, gRPC 등)
+  * 기타 설정
+    * 트래픽 분산 알고리즘, 고정 세션 등
+
+![](./images/ELB_대상그룹.png)
+
+#### 아키텍쳐
+
+![](./images/ELB_아키텍쳐.png)
+
+
+
