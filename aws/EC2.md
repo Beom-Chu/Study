@@ -274,5 +274,27 @@ EC2의 스케일링은 Scale Out 방식.
 
 ![](./images/ELB_아키텍쳐.png)
 
+<br>
 
+### Security Group(보안 그룹)
+
+* 인스턴스에 대한 인바운드 및 아웃바운드 트래픽을 제어하는 가상 방화벽 역할
+
+* 최대 5개의 보안 그룹에 인스턴스 할당 가능
+* 서브넷 수준이 아닌 인스턴스 수준에서 작동
+* 특징
+  * 보안 장치
+    * Network Access List(NACL)와 함께 방화벽의 역할을 하는 서비스
+  * Prot 허용
+    * 트래픽이 지나갈 수 있는 Port와 Source를 설정 가능
+    * Deny는 불가능 -> NACL로 가능
+  * 인스턴스 단위
+    * 하나의 인스턴스에 하나 이상의 SG 설정 가능
+    * NACL의 경우 서브넷 단위
+    * 설정된 Instance는 설정한 모든 SG의 룰을 적용 받음
+  * Stateful
+    * Inbound로 들어온 트래픽이 별 다른 Outbound설정 없이 나갈 수 있음
+    * NACL은 Stateless
+
+![](./images/EC2_보안그룹.png)
 
