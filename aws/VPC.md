@@ -67,3 +67,15 @@ Virtual Private Cloud
 
 * 트래픽이 어디로 가야 할지 알려주는 이정표
 * 기본적으로 VPC 생성시 만들어줌
+
+### NAT Instance / NAT Gateway
+
+* Private Instance가 외부의 인터넷으로 통신하기 위한 통로
+* NAT Instance는 단일 Instance(EC2) / NAT Gateway는 AWS에서 제공하는 서비스
+* NAT Instance를 사용할 때 Source/Destination Check를 해제해야 함
+* NAT Instance는 Public Subnet에 있어야 함
+
+### Bastion Host
+
+* Private Instance에 외부에서 접근하기 위한 Instance
+* Public Subnet에 위치
