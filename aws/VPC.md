@@ -79,3 +79,24 @@ Virtual Private Cloud
 
 * Private Instance에 외부에서 접근하기 위한 Instance
 * Public Subnet에 위치
+
+### VPC Endpoint
+
+VPC 엔드포인트를 통해 인터넷 게이트웨이, NAT 디바이스, VPN 연결 없이 VPC와 지원 서비스 간에 연결을 설정 가능.
+
+#### Interface Endpoint VS Gateway Endpoint
+
+* Interface Endpoint
+  * Private IP를 만들어 서비스로 연결시켜줌
+  * 많은 서비스들을 지원 (SQS, SNS, Kinesis, Sagemaker 등)
+
+![](./images/VPC_InterfaceEndpoint.png)
+
+* Gateway Endpoint
+  * 라우팅 테이블에서 경로의 대상으로 지정하여 사용
+  * S3 및 DynamoDB 지원
+
+![](./images/VPC_GatewayEndpoint.png)
+
+
+
