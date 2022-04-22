@@ -120,3 +120,130 @@ f6e513b399a6
 docker container logs -t {컨테이너식별자}
 ```
 
+<br>
+
+# Dockerfile
+
+![](./images/dockerfile.png)
+
+Dockerfile은 Docker 이미지(image)가 어떤 단계를 거쳐 빌드(build)되야 하는지를 담고있는 텍스트 파일입니다. Docker는 Dockerfile에 나열된 명령문을 차례대로 수행하여 이미지를 생성해줍니다.
+
+| 명령어     | 용도                                                   |
+| ---------- | ------------------------------------------------------ |
+| FROM       | base 이미지 설정                                       |
+| WORKDIR    | 작업 디렉토리 설정                                     |
+| RUN        | 이미지 빌드시 커맨드 실행                              |
+| ENTRYPOINT | 이미지 실행시 항상 실행되어야 하는 커맨드 설정         |
+| CMD        | 이미지 실행시 디폴트 커맨드 또는 파라미터 설정         |
+| EXPOSE     | 컨테이너가 리스닝할 포트 및 프로토콜 설정              |
+| COPY / ADD | 이미지의 파일 시스템으로 파일 또는 디렉토리 복사       |
+| ENV        | 환경 변수 설정                                         |
+| ARG        | 빌드시 넘어올 수 있는 인자 설정                        |
+| VOLUME     | 호스트와 공유할 컨테이너 내부의 디렉토리 설정          |
+| USER       | 컨테이너 내에서 사용될 사용자 계정의 이름이나 UID 설정 |
+
+### FROM
+
+`FROM` 명령문은 base 이미지를 지정해주기 위해서 사용되는데 보통 Dockerfile 최상단에 위치.
+
+```dockerfile
+FROM ubuntu:latest  # 우분투 최신 버전을 base 이미지로 사용
+FROM node:12  # NodeJS12를 base 이미지로 사용
+FROM python:3.8-alpine  # 파이썬3.8(alpine 리눅스 기반)을 base 이미지로 사용
+```
+
+### WORKDIR
+
+`shell`의 `cd` 명령문처럼 컨테이너 상에서 작업 디렉토리로 전환을 위해 사용.
+
+`WORKDIR` 명령문으로 작업 디렉토리를  전환하면 이후 실행되는 모든 명령문은 해당 디렉토리를 기준으로 실행.
+
+```dockerfile
+WORKDIR /usr/app  # usr/app으로 작업 디렉토리 전환
+```
+
+### RUN
+
+```dockerfile
+RUN ["<커맨드>", "<파라미터1>", "<파라미터2>"]
+RUN <전체 커맨드>
+```
+
+`shell`에서 커맨드를 실행하는 것처럼 이미지 빌드 과정에서 필요한 커맨드를 실행하기 위해 사용.
+
+보통 이미지 안에 특정 소프트웨어를 설치하기 위해 많이 사용 됨.
+
+```dockerfile
+RUN apk add curl  # curl 도구 설치
+RUN npm install --silent  # npm 패키지 설치
+RUN pip install -r requirements.txt  # pip 패키지 설치
+```
+
+### ENTRYPOINT
+
+```dockerfile
+ENTRYPOINT ["<커맨드>", "<파라미터1>", "<파라미터2>"]
+ENTRYPOINT <전체 커맨드>
+```
+
+이미지를 컨테이너로 띄울 때 항상 실행되어야 하는 커맨드를 지정.
+
+Docker 이미지를 하나의 실행 파일처럼 사용할 때 유용 : 컨테이너가 뜰 때 `ENTRYPOINT` 명령문으로 지정된 커맨드가 실행되고, 이 커맨드로 실행된 프로세스가 죽을 때 컨테이너가 따라서 종료됨.
+
+```dockerfile
+ENTRYPOINT ["npm", "start"]  # npm start 스크립트 실행
+ENTRYPOINT ["python", "manage.py", "runserver"]  # Django 서버 실행
+```
+
+### CMD
+
+```dockerfile
+CMD ["<커맨드>","<파라미터1>","<파라미터2>"]
+CMD ["<파라미터1>","<파라미터2>"]
+CMD <전체 커맨드>
+```
+
+해당 이미지를 컨테이너로 띄울 때 디폴트로 실행할 커맨드나 `ENTRYPOINT` 로 지정된 커맨드에 디폴트로 넘길 파라미터를 지정할 때 사용
+
+`RUN` 명령문은 이미지 빌드 시 항상 실행되고 Dockerfile에 여러 개를 선언 할 수 있지만,
+
+`CMD` 명령문은 이미지를 컨테이너로 띄울 때 딱 한 번만 실행됨.
+
+### COPY / ADD
+
+```dockerfile
+COPY <src>... <dest>
+COPY ["<src>",... "<dest>"]
+```
+
+호스트 컴퓨터에 있는 디렉토리나 파일을 Docker 이미지의 파일 시스템으로 복사하기 위해 사용
+
+절대 경로, 상대 경로 모두 지원
+
+```dockerfile
+# package.json 파일만 복사
+COPY package.json package.json
+```
+
+```dockerfile
+# 이미지를 빌드한 디렉토리의 모든 파일을 컨테이너 app/ 디렉토리로 복사
+WORKDIR app/
+COPY . .
+```
+
+`ADD` 명령문은 좀더 파워풀한 `COPY` 명령문.
+
+`ADD` 명령문은 일반 파일 뿐만 아니라 압축 파일이나 네트워크 상의 파일도 사용 가능.
+
+특수한 파일을 다루는게 아니라면 `COPY`명령문 사용을 권장.
+
+### ENV
+
+```dockerfile
+ENV <키> <값>
+ENV <키>=<값>
+```
+
+환경 변수를 설정하기 위해 사용
+
+`ENV` 명령문으로 설정된 환경 변수는 이미지 빌드 시에도 사용되고, 해당 컨테이너에서 돌아가는 애플리케이션에서도 사용 가능.
