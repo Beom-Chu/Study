@@ -70,5 +70,51 @@
   * 데이터베이스가 삭제된 이후에도 계속 보관
   * 스냅샷의 복구는 항상 새로운 DB Instance를 생성하여 수행
 
+## RDS Multi AZ
+
+* 두 개 이상의 AZ에 걸쳐 DB를 구축하고 원본과 다른 DB(Standby)를 자동으로 동기화(Sync)
+  * SQL Server, Oracle, MySql, PostgreSQL, MariaDB에서 지원
+  * Aurora의 경우 다중 AZ를 설계 단계에서 지원
+* 원본 DB의 장애 발생 시 자동으로 다른 DB가 원본으로 승격(DNS가 Standby DB로)
+* Standby DB는 접근 불가능
+* 퍼포먼스의 상승 효과가 아닌 안정성을 위한 서비스
+
+![](./images/RDS_MultiAZ_1.png)
+
+![](./images/RDS_MultiAZ_2.png)
+
+## 읽기 전용 복제본(Read Replica)
+
+* 원래 DB의 읽기 전용 복제본을 생성(Async)
+  * 쓰기는 원본 DB에, 읽기는 복제본에서 처리하여 워크로드 분산
+  * MySql, PostgreSQL, MariaDB, Oracle, Aurora에서 지원
+* 안정성이 아닌 퍼포먼스를 위한 서비스
+* 총 5개까지 생성 가능
+* 각각의 복제본은 고유 DNS가 할당 -> 접근 가능
+  * 원본 DB의 장애 발생시 수동으로 DNS 변경 필요
+* 복제본 자체에 Multi AZ 설정 가능
+* Multi AZ DB에 Read Replica 설정 가능
+* 자동 백업이 활성화 되어 있어야 읽기 전용 복제본 생성 가능
+* 각 DB의 엔진 버전이 다를 수 있음
+
+![](./images/RDS_읽기전용복제본.png)
+
+## RDS Multi Region
+
+* 다른 리전에 지속적으로 동기화 시키는 DB 클러스터를 생성
+  * Async 복제
+* 주로 로컬 퍼포먼스 혹은 DR(*Disaster Recovery*:재해복구)시나리오로 활용
+* 각 리전별로 자동 백업 가능
+* 리전별로 Multi AZ 가능
+
+| 비교 항목     | Multi AZ                    | Multi Region              | Read Replica             |
+| ------------- | --------------------------- | ------------------------- | ------------------------ |
+| 목적          | 고가용성                    | DR / 로컬 퍼포먼스        | 확장성 / 성능            |
+| 복제 방식     | Sync                        | Async                     | Async                    |
+| 액티브        | Primary DB만 읽기/쓰기 가능 | Read만 가능               | Read만 가능              |
+| 백업          | 자동 백업(Standby기준)      | 자동 백업 가능            | 기본적으로는 백업 비활성 |
+| 엔진 업데이트 | Primary만 업데이트          | 각 리전별로 다른 업데이트 | DB별로 다른 업데이트     |
+| FailOver      | 자동으로 Standby로 Failover | 수동으로 Failover         | 수동으로 Failover        |
+
 
 
