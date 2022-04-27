@@ -298,3 +298,33 @@ EC2의 스케일링은 Scale Out 방식.
 
 ![](./images/EC2_보안그룹.png)
 
+<br>
+
+### Elastic IP
+
+EC2, NLB, Nat Gateway 등에 고정 아이피를 부여해주는 서비스
+
+![](./images/Elastic IP.png)
+
+##### ENI(Elastic Network Interface)
+
+* 일종의 가상의 렌카드
+
+* 구성
+  * MAC address
+  * 원본/대상 확인
+  * 한개 이상의 보안 그룹
+  * 한개의 메인 프라이빗 IPv4
+  * 한개 이상의 보조 프라이빗 IPv4
+  * 한개 이상의 IPv6 주소
+  * **하나의 퍼블릭 IPv4 주소**
+
+* 하나의 EC2에 여러개 달 수 있음
+
+* **EC2를 재시작 할 경우 부여되었던 퍼블릭 IP주소가 바뀜**
+  * 때문에 Elastic IP를 사용
+
+#####  Elastic IP의 가격 책정
+
+* 사용은 무료
+* 사용하지 않거나 ENI에 붙어있지 않을때만 사용료 지불
