@@ -133,3 +133,69 @@
 
 ![](./images/Aurora_읽기2.png)
 
+<br>
+
+# Aurora Serverless
+
+* 온디맨드 Auto Scaling 구성
+
+* 애플리케이션 요구사항을 기반으로 자동으로 시작 및 종료하고 용량을 확장 또는 축소.
+
+* Aurora의 Serverless 버전
+  * 즉 인스턴스를 미리 프로비저닝하거나 관리할 필요가 없음
+  * T2.micro/T2.midium 등 인스턴스 타입 선택 불필요
+* V1과 V2가 존재 : V2는 아직 Preview 상태
+
+## 특징
+
+* OnDemand
+  * 사용한 리소스를 1초 단위로 과금
+* Single AZ
+  * 단 Multi-AZ Failover(기존의 Provisioned보다 느림)
+* 용량은 10Gb~128Tb로 자동 스케일링
+* DB Cluster Parameter Group만 지원
+  * DB Cluster Parameter Group : 클러스터 전체에 적용
+  * DB Instance Parameter Group : 개별 인스턴스에 적용
+* ACU(Aurora Capacity unit) 단위로 컴퓨팅 조절
+  * 약 2Gb Ram, CPU, 네트워크
+  * 최대/최소 ACU 설정 가능
+  * AWS에서 Warm Pool에서 인스턴스를 준비하고 스케일링에 따라 인스턴스를 할당/회수
+  * 최소 0ACU까지 스케일 다운 가능 = 스토리지 비용만 지불
+    * 단 0ACU에서 1 이상의 ACU로 전환하는데 시간 소요(25~40초)
+    * 선택적인 기능, 즉 원한다면 최소 1ACU이상 유지 가능
+    * 디폴트 5분, 최대 24시간 까지
+    * 7일동안 이용내역 없으면 스냅샷으로 저장, 요청 발생시 자동 복구
+
+## 아키텍쳐
+
+![](./images/Aurora_serverless1.png)
+
+![](./images/Aurora_serverless2.png)
+
+![](./images/Aurora_serverless3.png)
+
+## 보안과 복구
+
+* Multi-AZ Failover
+  * 장애 발생시 자동으로 다른 AZ에 복구
+* 기본적으로 암호화되어 있음
+  * 비활성 불가
+* 패치/업데이트시 스케일링 포인트를 찾아 업데이트
+  * 스케일링 포인트 : 쿼리 처리가 없는 상태
+  * 하루 이상 찾지 못하면 클러스터 이벤트로 알려줌
+  * 이후 TimeoutAction 설정에 따라 롤백 혹은 강제 업데이트
+
+## 제약사항
+
+* VPC 밖에서 액세스 불가능
+  * 즉, 직접 밖에서 로그인 불가능
+  * Public IP 할당 불가능
+  * Data API 혹은 Bastion Host 등의 방법으로 접근
+* Replica 불가능
+* 클로닝 불가능
+* Backtrack 불가능
+* Multi-Master 불가능
+
+* 포트는 3306(MySql), 5432(PostgreSQL) 고정
+* Inter Region VPC Peering 불가능
+* 엔진 버전 고정
