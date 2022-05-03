@@ -304,7 +304,7 @@ EC2의 스케일링은 Scale Out 방식.
 
 EC2, NLB, Nat Gateway 등에 고정 아이피를 부여해주는 서비스
 
-![](./images/Elastic IP.png)
+![](./images/ElasticIP.png)
 
 ##### ENI(Elastic Network Interface)
 

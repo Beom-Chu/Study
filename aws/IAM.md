@@ -37,7 +37,7 @@
 
 ### IAM의 권한 검증
 
-![](./images/IAM의 권한검증.png)
+![](./images/IAM권한검증.png)
 
 
 
