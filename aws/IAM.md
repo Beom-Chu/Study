@@ -50,3 +50,57 @@
 * MFA를 활성화 하기
 * AccessKey 대신 역할을 활용하기
 * IAM 자격 증명 보고서 활용하기
+
+<br>
+
+## 권한 범위 설정
+
+#### 권한 범위(Permission Boundaries)
+
+* IAM 자격증명(사용자, 역할)이 행사 가능한 **최대 권한**을 정의
+  * 실제로 자격을 부여하지 않고 행사 할 수 있는 권한의 범위만 정의
+* 자격 증명이 행사 할 수 있는 권한은 권한 범위와 실제 부여된 권한 중 겹치는 부분
+
+![](./images/IAM_권한범위.png)
+
+1. 이미지를 보면 사용자가 ec2 를 실행할 수 있는 정책과 s3의 객체를 가져올 수 있는 정책을 가지고 있음.
+2. 그러나 사용자는 dev_user_boundaries 권한 범위를 가지고 있음.
+3. dev_user_boundaries 는 ec2 의 모든 권한이 가능함.
+4. 사용자는 권한 범위와 정책이 겹치는 부분인 ec2 실행 권한만 행사가 가능.
+5. s3 객체를 가져오는 것은 불가능(권한 범위에 s3는 없음)
+
+#### 사용 예시
+
+* Production 인프라 보호
+  * 관리자가 주이너 이하 개발자 유저가 따라야 할 권한 범위 정책 생성
+    * 권한범위 내용 : ec2:*, 단 Stage만 가능, Production인 경우 수정 불가
+  * 유저 생성시 boundary 포함해서 부여
+
+![](./images/IAM_권한범위사용사례.png)
+
+##### 정책 생성 JSON 샘플
+
+```json
+{
+    "Version" : "2021-05-18",
+    "Statement" : [
+        {
+            "Effect" : "Allow",
+            "Action" : ["ec2:*"],
+            "Resource" : "*"
+        },
+        {
+            "Sid":"DenyEC2Production",
+            "Effect" : "Deny",
+            "Action" : "ec2:*",
+            "Resource" : "arn:aws:ec2:*:*:instance/*",
+            "Condition" : {
+                "StringEquals" : {
+                    "aws:ResourceTag/Stage" : "Production"
+                }
+            }
+        }
+    ]
+}
+```
+
