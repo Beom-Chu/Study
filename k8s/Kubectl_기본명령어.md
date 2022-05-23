@@ -1,14 +1,15 @@
 # Kubectl_기본명령어
 
-| 명령어   | 설명                                                     |
-| -------- | -------------------------------------------------------- |
-| apply    | 원하는 상태를 적용. 보통 `-f` 옵션으로 파일과 함께 사용  |
-| get      | 리소스 목록 보기                                         |
-| describe | 리소스 상태 상세 보기                                    |
-| delete   | 리소스 제거                                              |
-| logs     | 컨테이너의 로그 보기                                     |
-| exec     | 컨테이너에 명령어를 전달. 컨테이너에 접근 할때 주로 사용 |
-| config   | kubectl 설정 관리                                        |
+| 명령어   | 설명                                                       |
+| -------- | ---------------------------------------------------------- |
+| apply    | 원하는 상태를 적용. 보통 `-f` 옵션으로 파일과 함께 사용    |
+| get      | 리소스 목록 보기                                           |
+| describe | 리소스 상태 상세 보기                                      |
+| delete   | 리소스 제거                                                |
+| logs     | 컨테이너의 로그 보기                                       |
+| exec     | 컨테이너에 명령어를 전달. 컨테이너에 접근 할때 주로 사용   |
+| config   | kubectl 설정 관리                                          |
+| top      | 특정 파드, 컨테이너, 노드에 대한 메트릭 보기 (cpu, memory) |
 
 
 
@@ -126,3 +127,16 @@ kubectl config current-context
 # 컨텍스트 설정
 kubectl config use-context minikube
 ```
+
+<br>
+
+### 메트릭 보기
+
+```sh
+# Pod들의 메트릭 조회(cpu, memory)
+kubectl top pod
+
+# Node들의 메트릭 조회(cpu, memory)
+kubectl top node
+```
+
