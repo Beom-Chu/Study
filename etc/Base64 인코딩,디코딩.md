@@ -4,7 +4,7 @@
 
 ## Linux & MacOS
 
-#### base64 인코딩
+#### ~~base64 인코딩~~
 
 ```sh
 $ echo '김범수' | base64
@@ -16,9 +16,19 @@ $ echo '김범수' | base64
 ```sh
 $ echo 6rmA67KU7IiYCg== | base64 -d
 김범수
+
 ```
 
+### 위 방식은 인코딩시 개행문자를 포함하게 되므로 `-n` 옵션을 사용하자.
 
+#### base64 인코딩
+
+```sh
+$ echo -n '김범수' | base64
+6rmA67KU7IiY
+```
+
+#### base64 디코딩은 동일
 
 
 
