@@ -24,7 +24,7 @@ data:
   K8S_TEST: "aWtzb29uX1RFU1RfMQ=="
 ```
 
-[Base64 인코딩 참고]: (../etc/Base64%20인코딩%2C디코딩.md)
+[Base64 인코딩 참고](../etc/Base64%20인코딩%2C디코딩.md)
 
 
 #### Secret 설정 중 일부 사용  deployment.yml 샘플
