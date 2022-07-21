@@ -25,7 +25,7 @@ Parameter 0 of constructor in podo.WantQuailfierAutowired required a single bean
 
 `Lombok`은 `@RequiredArgsConstructor` 어노테이션을 사용하면 자동으로 생성자를 만드는데, 인자에 `@Qualifier`를 붙여주지 않는다.
 
-* **Lombok이 만든 class **
+* **Lombok이 만든 class**
 
 ```java
 @RequiredArgsConstructor
