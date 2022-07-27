@@ -25,3 +25,15 @@ System.out.println(l3 == l4); // false
 System.out.println(l3.equals(l4)); // true
 ```
 
+<br>
+
+그렇다면 원시 타입 long과 참조 타입 Long 을 비교하는 경우는 어떻게 될까?
+
+```java
+Long l5 = 128L;
+long l6 = 128L;
+System.out.println(l5 == l6); // true
+System.out.println(l5.equals(l6)); // true
+```
+
+이 경우 묵시적 형변환 후 비교를 하게 되어 정상적인 결과를 얻을 수 있다.
