@@ -139,3 +139,48 @@ public void test (){
    }
 ```
 
+</br>
+
+# 주의사항
+
+### @Getter, @Setter, @Data 사용시 boolean 타입에 필드명이 is 시작하는 경우
+
+일반적으로 생성 되듯이 `get[필드명]`, `set[필드명]` 처럼 생성 되지 않음.
+
+`User.java`
+
+```java
+@Data
+public class User {
+    private int id;
+    private boolean isAdult;
+}
+```
+
+`User.class`
+
+```java
+// . . . 생략 . . .
+	public int getId() {
+        return this.id;
+    }
+    public boolean isAdult() {
+        return this.isAdult;
+    }
+    public void setId(final int id) {
+        this.id = id;
+    }
+    public void setAdult(final boolean isAdult) {
+        this.isAdult = isAdult;
+    }
+// . . . 생략 . . .
+```
+
+위처럼 `getter` 는 `isAdult` 로, `setter` 는 `setAdult` 로 만들어진 걸 확인 가능. 
+
+**이 때문에 Spring Controller에서 Java 객체 형식으로 받아서 처리할 때 해당 값이 항상 `false` 가 되는 현상이 발생**.
+
+#### 해결 방법
+
+1.  기본 타입인 `boolean` 대신에 참조 타입인 `Boolean` 을 사용
+2.  기본 타입 `boolean` 을 사용하고 싶으면  직접 getter, setter 메서드를 만들어 사용. (ex : getIsAdult, setIsAdult)
