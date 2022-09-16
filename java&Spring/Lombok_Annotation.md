@@ -141,8 +141,6 @@ public void test (){
 
 </br>
 
-# 주의사항
-
 ### @Getter, @Setter, @Data 사용시 boolean 타입에 필드명이 is 시작하는 경우
 
 일반적으로 생성 되듯이 `get[필드명]`, `set[필드명]` 처럼 생성 되지 않음.
@@ -184,3 +182,34 @@ public class User {
 
 1.  기본 타입인 `boolean` 대신에 참조 타입인 `Boolean` 을 사용
 2.  기본 타입 `boolean` 을 사용하고 싶으면  직접 getter, setter 메서드를 만들어 사용. (ex : getIsAdult, setIsAdult)
+
+<br>
+
+#### 생성자 생성 어노테이션의 access 옵션(@NoArgsConstructor, @RequiredArgsConstructor, @AllArgsConstructor)
+
+```java
+@Data
+@AllArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
+public class AccessOption {
+    private int id;
+    private String name;
+}
+```
+
+롬복으로 생성되는 생성자의 접근제어자를 설정 가능하다.
+
+```java
+// 빌드된 AccessOption.class
+//...생략...//
+	protected AccessOption(final int id, final String name) {
+        this.id = id;
+        this.name = name;
+    }
+
+    private AccessOption() {
+    }
+//...생략...//
+```
+
+생성자의 접근제어자가 각각 protected, private로 만들어진 걸 확인 할 수 있다.
