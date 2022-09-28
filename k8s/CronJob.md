@@ -33,6 +33,8 @@ spec:
             - -c
             - date; echo Hello from the Kubernetes cluster
           restartPolicy: OnFailure
+  successfulJobsHistoryLimit: 2
+  failedJobsHistoryLimit: 2
 ```
 
 
@@ -86,3 +88,14 @@ spec:
 
 이 필드를 지정하지 않으면 잡에 기한 없음.
 
+
+
+#### successfulJobsHistoryLimit 옵션
+
+잡의 성공 내역을 몇개까지 기록해 놓을지 설정. 기본값은 3.
+
+
+
+#### failedJobsHistoryLimit 옵션
+
+잡의 실패 내역을 몇개까지 기록해 놓을지 설정. 기본값은 1
