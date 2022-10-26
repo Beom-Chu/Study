@@ -28,6 +28,8 @@ services:
 * `docker-compose up` : 명령어 하나로 문서에 정의한 서비스들을 한꺼번에 실행
 * `docker-compose down` : 명령어 하나로 정의한 서비스들 한꺼번에 종료
 
+<br>
+
 ## Docker Compose 특징
 
 #### 단일 호스트의 여러 격리된 환경
@@ -58,6 +60,8 @@ $ docker-compose -p second up
 #### 변수 및 환경간 구성 이동
 
 Compose 파일의 변수를 지원하여 다양한 환경 또는 다른 사용자에 맞게 컴포지션 커스텀이 가능합니다.
+
+<br>
 
 ## 서비스 정의
 
@@ -170,6 +174,119 @@ volumes:
 이런식으로 두개의 설정을 한꺼번에 정의하여 실행환경을 빠르게 구성할 수 있습니다.
 
 하나의 설정 파일로 관리가 되어 서비스를 빠르게 올리고 내릴 수 있습니다.
+
+<br>
+
+## 명령어
+
+### up
+
+`docker-compose.yml` 파일의 내용에 따라 이미지를 빌드하고 서비스를 실행합니다.
+
+```sh
+$ docker-compose -p first up -d
+```
+
+`up` 명령어로 compose 실행 시 단계별 진행 사항
+
+1. 서비스를 띄울 네트워크 설정
+2. 필요한 볼륨 생성(혹은 이미 존재하는 볼륨과 연결)
+3. 필요한 이미지 pull
+4. 필요한 이미지 build
+5. 서비스 의존성에 따라 서비스 실행
+
+##### options
+
+* `-d` : 서비스 백그라운드 실행.
+* `--force-recreate` : 컨테이너를 지우고 새로 생성.
+* `--build` : 서비스 시작 전 이미지를 새로 생성.
+* `-f` : 기본으로 제공하는 `docker-compose.yml`이 아닌 다른 파일명을 실행할 때 사용.
+* `docker-compose -f docker-compose.yml -f docker-compose-test.yml up` 형태로 두 개의 파일 실행도 가능.
+* Yaml을 두 개 이상 설정할 경우 뒤에 있는 파일이 우선.
+
+###  down
+
+실행 중인 서비스를 삭제합니다.
+
+컨테이너와 네트워크를 삭제하며, 옵션에 따라 볼륨도 같이 삭제할 수 있습니다.
+
+```sh
+$ docker-compose down
+```
+
+##### options
+
+* `-v` , `--volume` : 볼륨까지 같이 삭제.
+  * DB 데이터 초기화하는데 용이함
+  * 모든 설정을 초기화하고 새로 시작할 때 사용
+
+### stop, start
+
+서비스를 멈추거나, 멈춘 서비스를 시작합니다.
+
+```sh
+$ docker-compose stop
+$ docker-compose start
+```
+
+### ps
+
+현재 환경에서 실행 중인 서비스의 상태를 표시합니다.
+
+```sh
+$ docker-compose ps
+```
+
+### exec
+
+실행 중인 컨테이너에서 명령어를 실행합니다.
+
+명령어는 아래와 같은 패턴으로 실행됩니다.
+
+> docker-compose exec {service_name} {실행될 명령어}
+
+```sh
+$ docker-compose exec app ./upload_logs.sh
+$ docker-compose exec mysql mysql -uroot -psecret todos
+```
+
+### run
+
+특정 명령어를 일회성으로 실행합니다.
+
+`run` 은 `exec`와 비슷한 역할을 하지만 다른 점은 컨테이너의 재실행 여부입니다.
+
+`run`은 실행시 새로운 컨테이너를 띄우는 반면, `exec`는 실행되어 있는 컨테이너에 접속합니다.
+
+`exec`는 프로세서를 실행시켜 놓을 때 사용되고, `run`은 batch성 작업에 특화 되어있습니다.
+
+##### options
+
+* `--rm` : 해당 명령어가 종료된 뒤 컨테이너도 종료
+
+### logs
+
+output으로 나온 log들을 확인할 때 사용합니다.
+
+```sh
+$ docker-compose logs -f
+```
+
+##### options
+
+* `-f`, `--follow` : 실시간 로그 출력
+
+### config
+
+docker-compose에 최종적으로 적용된 설정을 보여줍니다.
+
+```sh
+$ docker-compose config
+```
+
+
+
+<br>
 
 ## Kubernetes와 차이
 
