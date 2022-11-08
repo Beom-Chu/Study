@@ -66,5 +66,5 @@ Entity에 해당하는 Table에 data가 하나도 없는 상태에서 위와 같
 
 <br>
 
-![test Code](https://github.com/Beom-Chu/Template-Or-Test/blob/main/src/test/java/com/kbs/templateortest/jpa/JpaOptionalTest.java)
+[Test Code](https://github.com/Beom-Chu/Template-Or-Test/blob/main/src/test/java/com/kbs/templateortest/jpa/JpaOptionalTest.java)
 
