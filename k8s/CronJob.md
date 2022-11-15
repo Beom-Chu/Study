@@ -99,3 +99,25 @@ spec:
 #### failedJobsHistoryLimit 옵션
 
 잡의 실패 내역을 몇개까지 기록해 놓을지 설정. 기본값은 1
+
+
+
+## CronJob 바로 실행
+
+CronJob은 정기적으로 Job을 만드는 작업이므로 Job을 Create 한다.
+
+1. 실행시킬 Cronjob의 이름 확인.
+
+```sh
+$ kubectl get cronjob
+NAME           SCHEDULE    SUSPEND   ACTIVE   LAST SCHEDULE   AGE
+cronjob-test   0 * * * *   False     2        30m             3d
+```
+
+2. Job을 생성
+
+```sh
+$ kubectl create job --from=cronjob/cronjob-test cronjob-test-0001
+job.batch/cronjob-test-0001 created
+```
+
