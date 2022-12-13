@@ -39,7 +39,7 @@ JPA에서는 영속성 컨텍스트에 있는 1차 캐시를 통해 엔티티를
 public class Article {
     @Id @GeneratedValue
     private Long id;
-    private String titile;
+    private String title;
     private String content;
 }
 ```
@@ -53,20 +53,21 @@ public interface ArticleRepository extends JpaRepository<Article, Long> {
 ```
 
 ```java
-@Autowired
-private ArticleRepository articleRepository;
+    @Autowired
+    private ArticleRepository articleRepository;
 
-@Test
-public void test() {
-    Article article = new Article();
-    article.setTitle("before");
-    articleRepository.save(article);
-    
-    int result = articleRepository.updateTitle(1l, "after");
-    assertThat(result).isEqualTo(1);
-    
-    System.out.println(articleRepository.findById(1L).get().getTitle());
-}
+    @Test
+    @Transactional
+    public void test() {
+        Article article = new Article();
+        article.setTitle("before");
+        articleRepository.save(article);
+
+        int result = articleRepository.updateTitle(1l, "after");
+        Assertions.assertEquals(result, 1);
+
+        System.out.println(articleRepository.findById(1L).get().getTitle());
+    }
 ```
 
 의도했던 출력값은 "after"지만 테스트에서는 "before"가 출력 됩니다.
@@ -88,3 +89,11 @@ public interface ArticleRepository extends JpaRepository<Article, Long> {
 `clearAutomatically` 옵션을 `true` 로 사용하면 벌크 연산을 수행시 영속성 컨텍스트를 clear하기 때문에, 이후 find 메소드를 사용 시 DB에서 다시 조회해 와서 영속성 컨텍스트에 캐싱 됩니다.
 
 그로 인해 의도 했던대로 "after"를 출력하게 됩니다.
+
+<br>
+
+## flushAutomatically
+
+* 해당 쿼리를 실행하기 전, 영속성 컨텍스트의 변경사항을 DB에 flush할 것인지를 결정하는 옵션입니다.
+
+* default : false
