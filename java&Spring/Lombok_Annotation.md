@@ -12,7 +12,7 @@
 | @Data | @ToString, @EqualsAndHashCode, @Getter, @Setter, @RequiredArgsConstructor를 모두 포함한 Annotation. |
 | @Value | 불변의 객체를 선언.<br>해당 Annotation 사용시 Setter 메소드 사용 불가. |
 | @Cleanup | close() 메소드를 자동으로 호출. |
-| @EqualsAndHashCode | equals, hashCode 메소드 생성.<br>exclude로 제외 처리 가능. |
+| @EqualsAndHashCode | equals, hashCode 메소드 생성.<br>exclude로 제외 처리 가능.<br>(callSuper = true) 설정으로 부모 클래스 필드까지 감안할지 여부 설정 가능 |
 | @Builder | 빌더 패턴을 사용할 수 있도록 해줌. |
 | @Builder.Default | 빌더 패턴 사용시 특정 필드의 기본값을 설정해줄 경우 사용. |
 | @Accessors(chain=true) | 객체 생성 후 체인 형태로 set 메소드 사용 가능. |
