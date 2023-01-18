@@ -54,6 +54,13 @@
 | $in      | 주어진 배열 안에 속하는 값                             |
 | $nin     | 주어빈 배열 안에 속하지 않는 값                        |
 
+##### 샘플
+
+```json
+db.컬렉션이름.find({'details.manufacturer': 'Acme', tag: {$ne: "gardening"} })
+db.컬렉션이름.find({'details.color': {$in: ['blue','Green']}})
+```
+
 ### 논리 연산자
 
 | operator | 설명                                   |
@@ -62,3 +69,45 @@
 | $and     | 주어진 모든 조건이 true 일 때 true     |
 | $not     | 주어진 조건이 false 일 때 true         |
 | $nor     | 주어진 모든 조건이 false 일때 true     |
+| $exists  | 특정 키를 가지고 있는지 질의           |
+
+##### 샘플
+
+```json
+db.컬렉션이름.find({
+     '$or': [
+           {'details.color': 'blue'},
+           {'details.manufacturer': 'Acme'}
+         ]
+})
+db.컬렉션이름.find({
+      $and: [
+           {tags: {$in: ['git','holiday']}},
+           {tags: {$in: ['gardening','landscaping']}}
+        ]
+})
+db.컬렉션이름.find({'details.color': {$exists: false}})
+db.컬렉션이름.find({'details.color': {$exists: true}})
+```
+
+### 배열
+
+| operator   | 설명                                                       |
+| ---------- | ---------------------------------------------------------- |
+| $elemMatch | 제공된 모든 조건이 동일한 하위 도큐먼트에 있는 경우 일치   |
+| $size      | 배열 하위 도큐먼트의 크기가 제공된 리터럴 값과 같으면 일치 |
+
+##### 샘플
+
+```json
+db.컬렉션이름.find({
+   'addresses': {
+       '$elemMatch': {
+           'name': 'home',
+           'state': 'NY'
+          }
+     }
+})
+db.컬렉션이름.find({'addresses': {$size: 3}})
+```
+
