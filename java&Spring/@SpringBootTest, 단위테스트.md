@@ -73,3 +73,62 @@ class TestApplication {
 
 * WebEnvironment.DEFINED_PORT : **정의된 포트로 내장톰캣이 구동된다**
 * WebEnvironment.NONE : WebApplicationType.NONE으로 구동된다.
+
+<br>
+
+## @DataJpaTest
+
+JPA를 다루는데 필요한 Bean만을 가져온다.
+
+기본적으로 각 테스트가 끝나면 rollback한다.
+
+```java
+@DataJpaTest
+public class JpaTest {
+
+    @Autowired
+    private TestRepository testRepository;
+
+    @Test
+    @DisplayName("전체 조회 테스트")
+    public void testFindAll() {
+        List<TestEntity> all = testRepository.findAll();
+
+        System.out.println("[[[all = " + all);
+    }
+
+}
+```
+
+<br>
+
+## @WebMvcTest
+
+MVC를 위한 테스트. 컨트롤러가 예상대로 작동하는지 테스트하기 위해 사용한다.
+
+Web Layer만 로드하며 관련 항목들만 스캔하도록 제한하여 @SpringBootTest보다 가볍고 빠른 테스트가 가능하다.
+
+```java
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+@WebMvcTest(InterceptorController.class)
+public class InterceptorTest {
+
+    @Autowired
+    private MockMvc mvc;
+
+    @Test
+    @DisplayName("WebMvcTest 테스트")
+    public void test() throws Exception {
+
+        mvc.perform(get("/interceptor/test"))
+                .andExpect(status().isOk())  //mvc.perform 결과 검증, HTTP Header Status 검증
+//                .andExpect(content().string("인터셉트 포함 path 패턴?")); //리턴 값 맞는지 검증
+                .andExpect(content().string("인터셉트 포함 path 패턴")); //리턴 값 맞는지 검증
+
+    }
+}
+```
+
