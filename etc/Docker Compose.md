@@ -187,6 +187,10 @@ volumes:
 $ docker-compose -p first up -d
 ```
 
+```shell
+$ docker-compose -p kafka-docker-compose -f kafka-docker-compose.yml up -d
+```
+
 `up` 명령어로 compose 실행 시 단계별 진행 사항
 
 1. 서비스를 띄울 네트워크 설정
@@ -196,6 +200,8 @@ $ docker-compose -p first up -d
 5. 서비스 의존성에 따라 서비스 실행
 
 ##### options
+
+* `-p` : 프로젝트명 설정.
 
 * `-d` : 서비스 백그라운드 실행.
 * `--force-recreate` : 컨테이너를 지우고 새로 생성.
