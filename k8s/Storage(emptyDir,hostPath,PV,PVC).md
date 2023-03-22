@@ -161,7 +161,7 @@ PVC만 정의하면 이에 맞는 물리디스크 생성 및 PV 생성을 자동
 
 쿠버네티스 1.6 부터 지원
 
-![](D:\workspace\Study\k8s\images\DynamicProvisioning.png)
+![](./images/DynamicProvisioning.png)
 
 * PVC를 정의하면 이 내용에 따라 쿠버네티스 클러스터가 물리 Disk를 생성하고 이에 연결된 PV를 생성
 * 디스크를 생성 할 때 필요한 디스크 타입을 정의 : StorageClass
