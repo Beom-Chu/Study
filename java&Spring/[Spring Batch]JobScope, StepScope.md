@@ -88,3 +88,4 @@ public class MyBatchConfiguration {
 
 `@Value("#{jobExecutionContext['name1']}"` 를 사용해서 jobExecutionContext의 변수를 사용 하는 것도 가능합니다.
 
+![](./images/JobScope실행도식.png)
