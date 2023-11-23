@@ -6,6 +6,7 @@
 |문자 합치기|concat| `||` |
 |날짜 형식 지정|DATE_FORMAT|TO_CHAR|
 |조건에 따른 값 반환|IF(), CASE WHEN|CASE WHEN|
+|현재일자|curdate()|current_date|
 
 </br>
 ## 사용 예
@@ -72,3 +73,4 @@ SELECT
 FROM table_name;
 -- 결과: 'Big' 또는 'Small'
 ```
+
