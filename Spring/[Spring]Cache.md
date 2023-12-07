@@ -90,3 +90,88 @@ public class CacheController {
     }
 }
 ```
+
+</br>
+
+##### `@Cacheable`의 옵션들
+* value
+캐시의 이름을 지정합니다. 여러 개의 캐시를 사용하는 경우에 유용합니다.
+캐시의 이름은 문자열 형태로 지정됩니다.
+
+```java
+@Cacheable(value = "myCache")
+public String myMethod() {
+    // 메서드 내용
+}
+```
+
+* cacheNames
+value와 동일한 역할을 합니다. 다만 여러 개의 캐시 이름을 배열 형태로 지정할 수 있습니다.
+
+```java
+@Cacheable(cacheNames = {"cache1", "cache2"})
+public String myMethod() {
+    // 메서드 내용
+}
+```
+
+* key
+캐시의 키를 지정합니다. 기본적으로 메서드의 모든 매개변수를 사용하여 키를 생성합니다. 
+특정 매개변수만을 사용하거나 SpEL (Spring Expression Language)을 사용하여 키를 정의할 수 있습니다.
+
+```java
+@Cacheable(key = "#param")
+public String myMethod(String param) {
+    // 메서드 내용
+}
+```
+
+* condition
+캐시를 적용할지 여부를 결정하는 조건을 지정합니다. SpEL을 사용하여 조건을 정의할 수 있습니다.
+
+```java
+@Cacheable(condition = "#result.length() > 3")
+public String myMethod() {
+    // 메서드 내용
+}
+```
+
+* unless
+캐시를 저장하지 않을 조건을 지정합니다. 역시 SpEL을 사용하여 조건을 정의할 수 있습니다.
+
+```java
+@Cacheable(unless = "#result.startsWith('notCacheable')")
+public String myMethod() {
+    // 메서드 내용
+}
+```
+
+* keyGenerator
+사용자 정의 키 생성기를 지정합니다. key 속성과 함께 사용될 수 있습니다.
+
+```java
+@Cacheable(key = "#param", keyGenerator = "myKeyGenerator")
+public String myMethod(String param) {
+    // 메서드 내용
+}
+```
+
+* cacheManager
+사용할 캐시 매니저를 지정합니다. 기본적으로는 기본 캐시 매니저가 사용됩니다.
+
+```java
+@Cacheable(cacheManager = "myCacheManager")
+public String myMethod() {
+    // 메서드 내용
+}
+```
+
+* sync
+캐시 갱신이나 로딩이 동기화되어야 하는지 여부를 지정합니다. 기본값은 false입니다.
+
+```java
+@Cacheable(sync = true)
+public String myMethod() {
+    // 메서드 내용
+}
+```
