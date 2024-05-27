@@ -146,3 +146,41 @@ GitLab CI/CD를 사용하려면 `gitlab-ci.yml` 설정 파일 작성이 필요�
 이 파일에서 변수, 작업간의 종속성을 정의하고 각 작업을 실행해야하는 시기와 방법을 지정합니다.
 
 파일의 이름은 원하는 대로 지정할 수 있지만, ` gitlab-ci.yml` 이 가장 일반적으로 사용되는 이름 입니다.
+
+```yml
+# gitlab-ci.yml 예
+stages:
+  - build
+  - test
+
+image: alpine:latest
+
+variables:
+  GREETING_MESSAGE: Hello
+
+build_a:
+  stage: build
+  script:
+    - echo "$GREETING_MESSAGE, GitLab CI!"
+    - echo "이 Job은 무언가를 빌드합니다."
+
+build_b:
+  stage: build
+  script:
+    - echo "이 Job은 다른 무언가를 빌드합니다."
+    - sleep 5
+
+test_a:
+  stage: test
+  script:
+    - echo "이 Job은 무언가를 테스트합니다."
+    - echo "빌드 단계의 모든 Job이 완료된 경우에만 실행됩니다."
+
+test_b:
+  stage: test
+  script:
+    - echo "이 Job은 다른 무언가를 테스트합니다."
+    - echo "이 Job도 빌드 단계의 모든 Job이 완료된 경우에만 실행됩니다."
+    - echo "test_a와 거의 동시에 시작됩니다."
+    - sleep 5
+```
