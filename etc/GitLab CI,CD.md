@@ -184,3 +184,49 @@ test_b:
     - echo "test_a와 거의 동시에 시작됩니다."
     - sleep 5
 ```
+
+##### maven을 사용하는 SpringBoot 프로젝트 사용 예
+
+```yml
+stages:
+  - build
+  - test
+
+maven-build:
+  image: maven:3.6.3-openjdk-11
+  stage: build
+  script: "./mvnw clean compile"
+
+maven-test:
+  image: maven:3.6.3-openjdk-11
+  stage: test
+  script: "./mvnw test"
+```
+
+##### GitLab CI 속도 향상
+
+GitLab CI 파이프라인에서 Cache를 사용하면 속도를 향상시킬 수 있습니다.
+
+```yml
+variables:
+  MAVEN_OPTS: "-Dhttps.protocols=TLSv1.2 -Dmaven.repo.local=$CI_PROJECT_DIR/.m2/repository -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=WARN -Dorg.slf4j.simpleLogger.showDateTime=true -Djava.awt.headless=true"
+  MAVEN_CLI_OPTS: "--batch-mode --errors --fail-at-end --show-version -DinstallAtEnd=true -DdeployAtEnd=true"
+
+image: maven:3.6.3-openjdk-11
+
+cache:
+  paths:
+    - .m2/repository
+
+stages:
+  - build
+  - test
+
+maven-build:
+  stage: build
+  script: "./mvnw $MAVEN_CLI_OPTS clean compile"
+
+maven-test:
+  image: maven:3.6.3-openjdk-11
+  script: "./mvnw $MAVEN_CLI_OPTS test"
+```
