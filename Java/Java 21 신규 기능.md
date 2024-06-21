@@ -118,4 +118,73 @@ static void printSum(Object obj) {
 }
 ```
 
+## JEP 441:  **[Pattern Matching for switch](https://openjdk.org/jeps/441)**
+
+#### switch문에서 Instanceof 사용
+
+기존의 스위치 문은 특정 타입 여부를 검사하는 것이 상당히 제한적이라 특정 타입인지 검사하려면 instanceof에 if-else 문법을 사용해야 했다.
+
+```java
+// prior to java 21
+static String formatter(Object obj) {
+    String formatted = "unknown";
+    if (obj instanceof Integer i) {
+        formatted = String.format("int %d", i);
+    } else if (obj instanceof Long l) {
+        formatted = String.format("long %d", l);
+    } else if (obj instanceof Double d) {
+        formatted = String.format("double %f", d);
+    } else if (obj instanceof String s) {
+        formatted = String.format("String %s", s);
+    }
+    return formatted;
+}
+```
+
+자바 21부터는 다음과 같은 간결한 방식으로 패턴 매칭 처리가 가능해졌다.
+
+```java
+// as of java 21
+static String formatterPatternSwitch(Object obj) {
+    return switch (obj) {
+        case Integer i -> String.format("int %d", i);
+        case Long l    -> String.format("long %d", l);
+        case Double d  -> String.format("double %f", d);
+        case String s  -> String.format("String %s", s);
+        default        -> obj.toString();
+    };
+}
+```
+
+#### switch문에서 null 검사
+
+기존에 switch문의 파라미터가 null이면 NPE이 발생하므로 null에 대한 검사가 외부에서 처리되어야 했다.
+
+```java
+// prior to java 21
+static void testNullSwitch(String s) {
+    if (s == null) {
+        System.out.println("No!!");
+        return;
+    }
+    switch (s) {
+        case "A", "B" -> System.out.println("Good");
+        default       -> System.out.println("Ok");
+    }
+}
+```
+
+하지만 자바 21부터 이런 부분이 개선되어 switch 내부에서 감사할 수 있게 되었다.
+
+```java
+// as of java 21
+staic void testNullSwitch(String s) {
+    switch (s) {
+        case null     -> System.out.println("No!!");
+        case "A", "B" -> System.out.println("Good");
+        default       -> System.out.println("Ok");
+    }
+}
+```
+
 
