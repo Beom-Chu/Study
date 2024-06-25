@@ -187,4 +187,113 @@ staic void testNullSwitch(String s) {
 }
 ```
 
+#### case 세분화
+
+```java
+// as of java 21
+static void testStringOld(String response) {
+    switch (response) {
+        case null -> { }
+        case String s -> {
+            if (s.equalsIgnoreCase("YES"))
+                System.out.println("You got it");
+            else if (s.equalsIgnoreCase("NO"))
+                System.out.println("Shame");
+            else
+                System.out.println("Sorry?");
+        }
+    }
+}
+```
+
+```java
+// as of java 21
+static void testStringNew(String response) {
+    switch (response) {
+        case null -> { }
+        case String s
+        when s.equalsIgnoreCase("YES") -> {
+            System.out.println("You got it");
+        }
+        case String s
+        when s.equalsIgnoreCase("NO") -> {
+            System.out.println("Shame");
+        }
+        case String s -> {
+            System.out.println("Sorry?");
+        }
+    }
+}
+```
+
+#### enum 개선
+
+기존에는 스위치 문에서 enum을 사용하는 것이 제한적이었다.
+
+```java
+// prior to java 21
+public enum Suit { CLUBS, DIAMONDS, HEARTS, SPADES }
+
+static void testforHearts(Suit s) {
+    switch (s) {
+        case HEARTS -> System.out.println("It's a heart!");
+        default -> System.out.println("Some other suit");
+    }
+}
+```
+
+case 세분화 를 도입해도 코드의 복잡성이 완전히 해결되지 않았다.
+
+```java
+// as of java 21
+sealed interface CardClassification permits Suit, Tarot {}
+public enum Suit implements CardClassification { CLUBS, DIAMONDS, HEARTS, SPADES }
+final class Tarot implements CardClassification {}
+
+static void exhaustiveSwitchWithoutEnumSupport(CardClassification c) {
+    switch (c) {
+        case Suit s when s == Suit.CLUBS -> {
+            System.out.println("It's clubs");
+        }
+        case Suit s when s == Suit.DIAMONDS -> {
+            System.out.println("It's diamonds");
+        }
+        case Suit s when s == Suit.HEARTS -> {
+            System.out.println("It's hearts");
+        }
+        case Suit s -> {
+            System.out.println("It's spades");
+        }
+        case Tarot t -> {
+            System.out.println("It's a tarot");
+        }
+    }
+}
+```
+
+이를 해결하고자 다음과 같이 코드를 작성할 수 있도록 개선되었다.
+
+```java
+// as of java 21
+static void exhaustiveSwitchWithBetterEnumSupport(CardClassification c) {
+    switch (c) {
+        case Suit.CLUBS -> {
+            System.out.println("It's clubs");
+        }
+        case Suit.DIAMONDS -> {
+            System.out.println("It's diamonds");
+        }
+        case Suit.HEARTS -> {
+            System.out.println("It's hearts");
+        }
+        case Suit.SPADES -> {
+            System.out.println("It's spades");
+        }
+        case Tarot t -> {
+            System.out.println("It's a tarot");
+        }
+    }
+}
+```
+
 
