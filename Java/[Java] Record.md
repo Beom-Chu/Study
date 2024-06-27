@@ -71,6 +71,48 @@ public final class TestRecord {
 
 * toString 구현
 
+### 일반 Class와 다른 equals() 동작 방식
 
+일반 Class는 기본적으로 객체의 주소값을 비교하는 방식으로 구현되어 있지만 Record는 이를 Override하여 필드의 값을 모두 비교하도록 구현되어 있다.
+
+```java
+TestClass class1 = new TestClass("name", 1);
+TestClass class2 = new TestClass("name", 1);
+System.out.println(class1.equals(class2));		// false
+
+TestRecord record1 = new TestRecord("name", 1);
+TestRecord record2 = new TestRecord("name", 1);
+System.out.println(record1.equals(record2));	// true
+```
+
+### Lombok과 다른 Getter 메소드명
+
+Lombok은 JavaBeans API specification에서 제공하는 bean-standard 표준을 따르는 `get` 접두사를 사용하는 네이밍을 기본으로 사용하고 있다.
+
+그러나 Record는 Getter가 필드명과 동일하게 생성된다.
+
+```java
+TestRecord record = new TestRecord("name", 1);
+System.out.println(record.age());
+System.out.println(record.name());
+```
+
+### 컴팩트 생성자(Compact Constructor)
+
+Record의 표준 생성자를 호출하면 자동으로 함께 실행되는 코드를 작성할 수 있는 기능이다.
+
+표준 생성자와 달리 컴팩트 생성자 내부에서는 인스턴스 필드에 접근할 수 없다는 특징이 있다.
+
+아래와 같이 validation 용도로 사용 할 수 있다.
+
+```java
+public record TestRecord(String name, int age) {
+    public TestRecord {
+        if (age < 0) {
+            throw new IllegalArgumentException("Age cannot be negative");
+        }
+    }
+}
+```
 
 
