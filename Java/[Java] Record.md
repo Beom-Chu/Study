@@ -78,11 +78,11 @@ public final class TestRecord {
 ```java
 TestClass class1 = new TestClass("name", 1);
 TestClass class2 = new TestClass("name", 1);
-System.out.println(class1.equals(class2));		// false
+System.out.println(class1.equals(class2));        // false
 
 TestRecord record1 = new TestRecord("name", 1);
 TestRecord record2 = new TestRecord("name", 1);
-System.out.println(record1.equals(record2));	// true
+System.out.println(record1.equals(record2));    // true
 ```
 
 ### Lombok과 다른 Getter 메소드명
@@ -111,6 +111,60 @@ public record TestRecord(String name, int age) {
         if (age < 0) {
             throw new IllegalArgumentException("Age cannot be negative");
         }
+    }
+}
+```
+
+### 리플렉션으로 조작 불가능
+
+Java 17부터는 언어 차원에서 Reflection을 사용한 필드 조작을 방지하고 있다. 이는 Record의 불변성을 더욱 강화시켜주는 특징이다.
+
+```java
+TestClass clss = new TestClass("name", 1);
+Class<TestClass> cls = (Class<TestClass>) Class.forName("org.example.TestClass");
+Field clsName = cls.getDeclaredField("name");
+clsName.setAccessible(true);
+clsName.set(clss, "new name");
+
+System.out.println(clss.name());	// new name
+TestRecord record = new TestRecord("name", 1);
+Class<TestRecord> recordClass = (Class<TestRecord>) Class.forName("org.example.TestRecord");
+Field recordName = recordClass.getDeclaredField("name");
+recordName.setAccessible(true);
+recordName.set(record, "new name");	// IllegalAccessException 예외 발생
+
+System.out.println(record.name());
+```
+
+##### 완전한 불변성을 보장하기 위한 팁
+
+이러한 특징에도 불구하고 불변성이 깨질 수 있는 케이스가 있다.
+
+객체를 필드로 주입 받는 경우인데 대표적으로 Collection 타입의 객체를 주입 받는 경우가 있다.
+
+```java
+public record Parent(String name, int age, List<String> children) {}
+```
+
+```java
+List<String> children = new ArrayList<>();
+children.add("john");
+Parent parent = new Parent("name", 1, children);
+
+parent.children().add("jane");
+System.out.println(parent.children());	// [john, jane]
+```
+
+이렇듯 객체의 참조를 받아와 조작하면 불변성이 깨질 수 있다.
+
+이를 방지하기 위해 표준 생성자를 Override하고, 직접 Collection을 불변으로 처리하면 된다.
+
+```java
+public record Parent(String name, int age, List<String> children) {
+    public Parent(String name, int age, List<String> children) {
+        this.name = name;
+        this.age = age;
+        this.children = Collections.unmodifiableList(children);
     }
 }
 ```
