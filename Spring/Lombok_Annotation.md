@@ -1,23 +1,23 @@
 # Lombok Annotation
 
-| Annotation               | 설명                                                         |
-| ------------------------ | ------------------------------------------------------------ |
-| @Getter                  | Class에 선언된 변수들의 Get 메소드 생성.                     |
-| @Setter                  | Class에 선언된 변수들의 Set 메소드 생성.                     |
-| @ToString                | toString() 메소드를 자동으로 생성.<br>Exclude로 제외 필드 지정 가능. |
-| @NonNull                 | 변수에 선언하며 해당 변수는 반드시 값이 있어야 함.<br>Setter에 Null값 입력시 NullPointException 발생. |
-| @NoArgsConstructor       | 파라미터가 없는 생성자를 생성.                               |
-| @RequiredArgsConstructor | final, @NonNull인 변수만 파라미터로 받는 생성자를 생성.      |
-| @AllArgsConstructor      | 모든 변수를 파라미터로 받는 생성자를 생성.                   |
-| @Data | @ToString, @EqualsAndHashCode, @Getter, @Setter, @RequiredArgsConstructor를 모두 포함한 Annotation. |
-| @Value | 불변의 객체를 선언.<br>해당 Annotation 사용시 Setter 메소드 사용 불가. |
-| @Cleanup | close() 메소드를 자동으로 호출. |
-| @EqualsAndHashCode | equals, hashCode 메소드 생성.<br>exclude로 제외 처리 가능.<br>(callSuper = true) 설정으로 부모 클래스 필드까지 감안할지 여부 설정 가능 |
-| @Builder | 빌더 패턴을 사용할 수 있도록 해줌. |
-| @Builder.Default | 빌더 패턴 사용시 특정 필드의 기본값을 설정해줄 경우 사용. |
-| @Accessors(chain=true) | 객체 생성 후 체인 형태로 set 메소드 사용 가능. |
-| @Slf4j | 자동으로 log 필드를 만들고, 해당 클래스의 이름으로 로거 객체를 생성하여 할당. |
-| @SneakyThrows | 명시적인 예외 처리를 생략 가능. |
+| Annotation               | 설명                                                                                                  |
+| ------------------------ | --------------------------------------------------------------------------------------------------- |
+| @Getter                  | Class에 선언된 변수들의 Get 메소드 생성.                                                                         |
+| @Setter                  | Class에 선언된 변수들의 Set 메소드 생성.                                                                         |
+| @ToString                | toString() 메소드를 자동으로 생성.<br>Exclude로 제외 필드 지정 가능.                                                   |
+| @NonNull                 | 변수에 선언하며 해당 변수는 반드시 값이 있어야 함.<br>Setter에 Null값 입력시 NullPointException 발생.                           |
+| @NoArgsConstructor       | 파라미터가 없는 생성자를 생성.                                                                                   |
+| @RequiredArgsConstructor | final, @NonNull인 변수만 파라미터로 받는 생성자를 생성.                                                              |
+| @AllArgsConstructor      | 모든 변수를 파라미터로 받는 생성자를 생성.                                                                            |
+| @Data                    | @ToString, @EqualsAndHashCode, @Getter, @Setter, @RequiredArgsConstructor를 모두 포함한 Annotation.       |
+| @Value                   | 불변의 객체를 선언.<br>해당 Annotation 사용시 Setter 메소드 사용 불가.                                                  |
+| @Cleanup                 | close() 메소드를 자동으로 호출.                                                                               |
+| @EqualsAndHashCode       | equals, hashCode 메소드 생성.<br>exclude로 제외 처리 가능.<br>(callSuper = true) 설정으로 부모 클래스 필드까지 감안할지 여부 설정 가능 |
+| @Builder                 | 빌더 패턴을 사용할 수 있도록 해줌.                                                                                |
+| @Builder.Default         | 빌더 패턴 사용시 특정 필드의 기본값을 설정해줄 경우 사용.                                                                   |
+| @Accessors(chain=true)   | 객체 생성 후 체인 형태로 set 메소드 사용 가능.                                                                       |
+| @Slf4j                   | 자동으로 log 필드를 만들고, 해당 클래스의 이름으로 로거 객체를 생성하여 할당.                                                      |
+| @SneakyThrows            | 명시적인 예외 처리를 생략 가능.                                                                                  |
 
 <br>
 
@@ -26,7 +26,7 @@
 #### @AllArgsConstructor
 
 * 발생할 수 있는 문제 상황
-
+  
   예로 들어, 두 개의 같은 타입 인스턴스 멤버를 선언한 상황에서 개발자가 선언된 인스턴스 멤버의 순서를 바꾸면, 개발자도 인식하지 못하는 사이에 lombok이 생성자의 파라미터 순서를 필드 선언 순서에 따라 변경하게 된다. 이때, IDE가 제공해주는 리팩토링은 전혀 동작하지 않고, 두 필드가 동일 타입이기 때문에 기존 소스에서도 오류가 발생하지 않아 아무런 문제없이 동작하는 것으로 보이지만, 실제로 입력된 값이 바뀌어 들어가는 상황이 발생한다.
 
 #### @Data
@@ -47,6 +47,51 @@
 
 - Builder를 사용하면 객체 생성이 명확해진다. 가급적 클래스 보다는 직접 만든 생성자 혹은 static 객체 생성 메소드에 붙이는 것을 권장한다.
 - @Builder를 붙이면 파라미터 순서가 아닌 이름으로 값을 설정하기 때문에 리팩토링에 유연하게 대응할 수 있고, 필드 순서를 변경해도 문제가 없다.
+
+#### @Builder.Default
+
+빌더 패턴을 통해 인스턴스를 만들 때 특정 필드를 특정 값으로 초기화할때  사용한다.
+
+```java
+@ToString
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+public class User {
+    private String name = "홍길동";
+    private String nickname;
+    private List<Role> roles = new ArrayList<>(); 
+}
+```
+
+위와 같이 필드에서 초기화를 해놓아도 빌더 패턴으로 만들면 초기화가 되지 않는다.
+
+```java
+public class TestApp {
+
+    public static void main(String[] args) {
+        User user = Pojo.builder().nickname("미스터").build();
+        System.out.println(puser toString());
+        // User(name=null, nickName=미스)
+    }
+}
+```
+
+이런 경우 아래와 같이 `@Builder.Default` 어노테이션을 사용하면 빌더 패턴을 사용해도 초기화를 적용 시킬 수 있다.
+
+```java
+@ToString
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+public class User {
+    @Builder.Default
+    private String name = "홍길동";
+    private String nickname;
+    @Builder.Default
+    private List<Role> roles = new ArrayList<>(); 
+}
+```
 
 #### @Accessors(chain=true)
 
@@ -83,9 +128,11 @@ public void test (){
        }
    }
 ```
+
 위와 같이 사용시 아래처럼 컴파일.
+
 ```java
-	public void copyFile(String in, String out) throws IOException {
+    public void copyFile(String in, String out) throws IOException {
        @Cleanup FileInputStream inStream = new FileInputStream(in);
        try {
            @Cleanup FileOutputStream outStream = new FileOutputStream(out);
@@ -112,6 +159,7 @@ public void test (){
    public class LogExample {
    }
 ```
+
 ```java
    public class LogExample {
        private static final org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(LogExample.class);
@@ -159,7 +207,7 @@ public class User {
 
 ```java
 // . . . 생략 . . .
-	public int getId() {
+    public int getId() {
         return this.id;
     }
     public boolean isAdult() {
@@ -180,8 +228,8 @@ public class User {
 
 #### 해결 방법
 
-1.  기본 타입인 `boolean` 대신에 참조 타입인 `Boolean` 을 사용
-2.  기본 타입 `boolean` 을 사용하고 싶으면  직접 getter, setter 메서드를 만들어 사용. (ex : getIsAdult, setIsAdult)
+1. 기본 타입인 `boolean` 대신에 참조 타입인 `Boolean` 을 사용
+2. 기본 타입 `boolean` 을 사용하고 싶으면  직접 getter, setter 메서드를 만들어 사용. (ex : getIsAdult, setIsAdult)
 
 <br>
 
@@ -202,7 +250,7 @@ public class AccessOption {
 ```java
 // 빌드된 AccessOption.class
 //...생략...//
-	protected AccessOption(final int id, final String name) {
+    protected AccessOption(final int id, final String name) {
         this.id = id;
         this.name = name;
     }
