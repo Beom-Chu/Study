@@ -19,8 +19,15 @@ Stream<T> sorted(Comparator<? super T> comparator)
 
 ```java
 public static class User {
-    public String name;
-    public int age;
+  public String name;
+  public int age;
+
+  public String getName() {
+    return name;
+  }
+  public int getAge() {
+    return age;  
+  }
 }
 ```
 
@@ -38,4 +45,29 @@ Comparator를 사용하는 정렬 메서드는 **Comparator가 음수를 반환
 users.sort((u1, u2) -> u1.age - u2.age);
 ```
 
-## Comprator 메서드
+## Comparator 메서드
+
+Comparator를 사용하면 좀 더 깔끔한 코딩이 가능하다.
+
+```java
+users.sort(Comparator.comparing(User::getAge));
+```
+
+역순으로 정렬하려면 아래와 같이 할 수 있다.
+
+```java
+users.sort(Comparator.comparing(User::getAge).reversed());
+```
+
+비교 대상이 기본형이라면 Comparator가 제공하는 static  메서드를 활용 가능하다.
+
+```java
+collect.sort(Comparator.naturalOrder()); // 오름차순
+collect.sort(Comparator.reverseOrder()); // 내림차순
+```
+
+비교하려는 기준이 여러개인 경우 `thenComparing` 을 사용하면 된다.
+
+```java
+users.sort(Comparator.comparing(User::getName).thenComparing(User::getAge));
+```
