@@ -111,4 +111,58 @@ class Data {
 
 다만 주의할 점은 **모든 스트림 연산에 대해 루프병합이 적용되는 것은 아니라는 점**이다.
 
+### 쇼트서킷
+
+쇼트서킷(Short circuit)이란 기본적으로 **불필요한 연산을 의도적으로 수행하지 않음으로써 실행 속도를 높이는 기법**이다. 그리고 스트림에서의 쇼트서킷은 `limit`과 같은 연산을 활용하여 **스트림의 일부 요소들에 대한 연산을 완전히 생략**하는 것을 의미한다.
+
+아래와 같이 `filter`를 통해 값이 2 이상인 데이터를 `peek`으로 A,B,C 메소드를 수행 한 후, `limit`을 통해 최대 1개의 스트림 요소만 선택해서 리스트에 담도록 할 것이다.
+
+```java
+    List<Data> list = Stream.of(new Data(1), new Data(2), new Data(3))
+            .filter(o -> o.value >= 2)
+            .peek(Data::runOperationA)
+            .peek(Data::runOperationB)
+            .peek(Data::runOperationC)
+            .limit(1)
+            .toList();
+    System.out.println(list);
+```
+
+콘솔을 확인해보면 아래와 같다.
+
+```shell
+데이터 2의 작업A
+데이터 2의 작업B
+데이터 2의 작업C
+[Data{2}]
+```
+
+첫 번째 스트림 요소가 `filter`에 의해 `peek`에 도달 하지 못했다. 두 번째 스트림 요소는 `peek`과 `toList`가 수행되고 세 번째 요소는 수행 되지 않았다. 이는 `limit(n)` 연산이 자신에게 도달한 요소가 n개가 되었을 때 스트림 내 다른 요소들을 더 이상 순회하지 않고 탈출하도록 만들기 때문이다.
+
+이를 전통적인 반복문을 사용하면 아래와 같다.
+
+```java
+    List<Data> dataList2 = List.of(new Data(1), new Data(2), new Data(3));
+    int maxSize = 1;
+    int count = 0;
+    List<Data> result = new ArrayList<>();
+    for (Data data : dataList2) {
+        if (data.value >= 2) {
+            data.runOperationA();
+            data.runOperationB();
+            data.runOperationC();
+            result.add(data);
+            count++;
+            if(count >= maxSize) {
+                break;
+            }
+        }
+    }
+    System.out.println(result);
+```
+
+이러한 최적화 전략은 특히 무한스트림을 다루는데 필수적이다.
+
+
+
 
