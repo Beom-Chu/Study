@@ -163,6 +163,47 @@ class Data {
 
 이러한 최적화 전략은 특히 무한스트림을 다루는데 필수적이다.
 
+### 제약사항
 
+연산의 종류에 따라 루프퓨전이 일어나지 않는 경우가 존재한다.
 
+우선 아래는 루프퓨전이 제대로 발생하는 경우이다. 첫 번째 요소에서 `peek` 작업들을  수행 후 `limit(1)`에 도달하자 나머지 스트림 요소에 대한 순회는 멈추고 `forEach` 연산 수행 후 스트림을 닫는 것을 콘손을 통해 알 수 있다.
 
+```java
+    Stream.of(new Data(2), new Data(1), new Data(3))
+            .peek(Data::runOperationA)
+            .peek(Data::runOperationB)
+            .limit(1)
+            .forEach(Data::runOperationC);
+```
+
+```shell
+데이터 2의 작업A
+데이터 2의 작업B
+데이터 2의 작업C
+```
+
+그런데 여기서 `sorted`를 통한 정렬 작업이 추가되면 어떻게 되는지 확인해보자. 이 경우 스트림 내의 모든 요소들에 대해 개별적으로 `peek` 작업이 수행 된 이후, `sorted`에 의해 정렬된 스트림 내의 첫 번째 요소에 대해 나머지 작업이 수행되는 것이 확인된다.
+
+```java
+    Stream.of(new Data(2), new Data(1), new Data(3))
+            .peek(Data::runOperationA)
+            .peek(Data::runOperationB)
+            .sorted(Comparator.comparingInt(Data::getValue))
+            .limit(1)
+            .forEach(Data::runOperationC);
+```
+
+```shell
+데이터 2의 작업A
+데이터 2의 작업B
+데이터 1의 작업A
+데이터 1의 작업B
+데이터 3의 작업A
+데이터 3의 작업B
+데이터 1의 작업C
+```
+
+이렇게 동작하는 이유는 `sorted`를 통한 **정렬 작업을 수행하기 위해서는 스트림을 구성하는 모든 요소가 필요하기 때문**이다.
+
+해당 파이프라인에서 루프퓨전이 아예 발생하지 않은 것은 아니다. `sorted`에 도달하기 이전의 `peek` 연산 두 개는 하나로 병합 되었음을 출력을 통해 알 수 있다.
