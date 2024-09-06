@@ -66,6 +66,57 @@ public interface Consumer<T> {
 list.forEach(System.out::println);
 ```
 
+## Supplier
 
+```java
+@FunctionalInterface
+public interface Supplier<T> {
+    T get();
+}
+```
+
+`Supplier`는 아무런 인자를 받지 않고 T 타입의 객체를 리턴한다.
+
+람다식으로는 `() -> T` 로 표현한다.
+
+공급자라는 이름처럼 아무것도 받지 않고 특정 객체를 리턴한다.
+
+#### 사용 예
+
+```java
+    Optional<String> optional = Optional.ofNullable(null);
+    String result = optional.orElseGet(() -> "No Data");
+    System.out.println(result);
+```
+
+`Optional` 타입의 인스턴스를 만들어서 가지고 있는 값이 null인 경우 `No Data` 라는 `String`으로, `Null`이 아닌 경우 해당 값을 출력 하는 코드이다. 이때 `orElseGet()` 메소드에서 `Supplier` 인터페이스를 사용했다.
+
+## Function
+
+```java
+@FunctionalInterface
+public interface Function<T, R> {
+    R apply(T t);
+}
+```
+
+`Function`은 T 타입 인자를 받아서 R 타입을 리턴한다.
+
+람다식으로는 `T -> R` 로 표현한다.
+
+수학식에서의 함수처럼 특정 값을 받아서 다른 값으로 반환해준다.
+
+T와 R은 같은 타입을 사용할 수도 있다.
+
+#### 사용 예
+
+```java
+    List<Integer> list = List.of(1, 2, 3, 4, 5);
+    list.stream()
+            .map(o -> o * 2)
+            .forEach(System.out::println);
+```
+
+1부터 5까지의 숫자 리스트를 각각 2배로 만들어서 순차적으로 출력하는 코드이다. 이때 `map` 메소드에서 `Function` 인터페이스를 사용한다.
 
 
