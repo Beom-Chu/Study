@@ -119,4 +119,77 @@ T와 R은 같은 타입을 사용할 수도 있다.
 
 1부터 5까지의 숫자 리스트를 각각 2배로 만들어서 순차적으로 출력하는 코드이다. 이때 `map` 메소드에서 `Function` 인터페이스를 사용한다.
 
+## Comparator
 
+```java
+@FunctionalInterface
+public interface Comparator<T> {
+    int compare(T o1, T o2);
+}
+```
+
+`Comparator` 타입은 T 타입 인자 두개를 받아서 `int` 타입을 리턴한다.
+
+람다식으로는 `(T, T) -> int` 로 표현한다. 
+
+#### 사용 예
+
+```java
+    List<Integer> list = List.of(1, 2, 3, 4, 5);
+    list.stream()
+            .sorted((i1, i2) -> i2.compareTo(i1))
+            .forEach(System.out::println);
+```
+
+1부터 5까지의 숫자 리스트를 크기가 큰 순서대로 정렬 후 출력하는 코드이다. 이 때 `sorted` 메소드에서 `Comparator` 인터페이스를 사용 한다.
+
+## Runnable
+
+```java
+@FunctionalInterface
+public interface Runnable {
+    public abstract void run();
+}
+```
+
+`Runnable`은 아무런 객체를 받지 않고 리턴도 하지 않는다.
+
+람다식으로는 `() -> void`로 표현한다.
+
+`Runnable` 이라는 이름에 맞게 실행 가능한 이라는 뜻을 나타내며 이름 그대로 실행만 할 수 있다고 생각하면 된다.
+
+#### 사용 예
+
+```java
+    Runnable runnable = () -> System.out.println("run runnable!");
+    runnable.run();
+```
+
+위 코드처럼 람다식으로 텍스트를 출력하는 코드를 작성할 수 있다.
+
+## Callable
+
+```java
+@FunctionalInterface
+public interface Callable<T> {
+    T call() throws Exception;
+}
+```
+
+`Callable`은 인자를 받지 않으며, 특정 타입의 객체를 반환한다. 또한 `call()` 메소드 수행 중 `Exception`을 발생시킬 수 있다.
+
+람다식은 `() -> T` 로 표현한다.
+
+#### 사용 예
+
+```java
+    Callable<DateTime> callable = () -> DateTime.now();
+    try {
+        DateTime call = callable.call();
+        System.out.println(call);
+    } catch (Exception e) {
+        throw new RuntimeException(e);
+    }
+```
+
+위 코드처럼 람다식으로 현재 날짜를 가져오는 코드를 작성해서 `call()` 메소드로 반환 받아보았다. `call()` 메소드는 `Exception`을 발생시킬 수 있으므로 `try-catch` 구문을 활용해주었다.
